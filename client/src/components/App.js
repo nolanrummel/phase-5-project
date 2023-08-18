@@ -1,6 +1,4 @@
 import React, {useState} from "react";
-import Login from "./Login";
-import Signup from "./Signup";
 import Title from "./Title";
 import Home from "./Home";
 import Places from "./Places"
@@ -12,7 +10,6 @@ import { UserProvider  } from "../context/user";
 
 function App() {
   const [user, setUser] = useState(null)
-  console.log(user)
 
   return (
     <Router>
@@ -21,25 +18,19 @@ function App() {
         <Navbar />
         <Switch>
           <Route exact path="/">
-            <Home />
-          </Route>
-          <Route path="/login">
-            <Login setUser={setUser} />
-          </Route>
-          <Route path="/signup">
-            <Signup setUser={setUser} />
+            <Home user={user} />
           </Route>
           <Route exact path="/home">
-            <Home />
+            <Home user={user} />
           </Route>
           <Route exact path="/team">
-            <Team />
+            <Team user={user}/>
           </Route>
           <Route exact path="/routes">
-            <Routes />
+            <Routes user={user}/>
           </Route>
           <Route exact path="/places">
-            <Places />
+            <Places user={user}/>
           </Route>
         </Switch>
       </UserProvider>
