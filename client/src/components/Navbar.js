@@ -5,7 +5,7 @@ function Navbar() {
     return (
     <nav>
         <NavLink to="/">Home</NavLink>
-        <NavLink to="/team">Teams</NavLink>
+        <NavLink to="/rides">Rides</NavLink>
         <NavLink to="/routes">Routes</NavLink>
         <NavLink to="/places">Places</NavLink>
     </nav>

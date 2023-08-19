@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { UserContext } from '../context/user'
 import "../styling/routes.css"
 
-function Routes() {
+function Routes({currentTime}) {
     const { user } = useContext(UserContext)
     const [routeList, setRouteList] = useState([])
 
@@ -17,10 +17,14 @@ function Routes() {
           })
     }, [])
 
-    const LeaderBoard = (route, rides) => {
+    const LeaderBoard = (route) => {
+        const rides = route.rides
+        const completedRides = rides.filter(item => item.date < currentTime)
         const userCount = {}
-        rides.forEach(rideData => {
+        let totalRating = 0
+        completedRides.forEach(rideData => {
             const userId = rideData.user.id
+            totalRating += rideData.rating
             if (userId in userCount) {
                 userCount[userId]++
             } else {
@@ -33,31 +37,34 @@ function Routes() {
             count: userCount[userId]
         }))
         sortedLeaders.sort((a, b) => b.count - a.count)
+        const slicedLeaders = sortedLeaders.slice(0, 5)
         return (
             <div>
-                {sortedLeaders.map(leader => {
+                {slicedLeaders.map(leader => {
                     return (
                         <div key={leader.id}>
                             {user ? 
                                 <div>
                                     {user.id === parseInt(leader.id) ?
                                         <div key={leader.id} className='user-leader'>
-                                            <p>{leader.name}: {leader.count} | Total Miles: {leader.count * route.distance}</p>
+                                            <p>{leader.name}: {leader.count} | Total Miles: {(leader.count * route.distance).toFixed(2)}</p>
                                         </div>
                                         :
                                         <div key={leader.id}>
-                                            <p>{leader.name}: {leader.count} | Total Miles: {leader.count * route.distance}</p>
+                                            <p>{leader.name}: {leader.count} | Total Miles: {(leader.count * route.distance).toFixed(2)}</p>
                                         </div>
                                     }
                                 </div>
                                 :
                                 <div key={leader.id}>
-                                    <p>{leader.name}: {leader.count} | Total Miles: {leader.count * route.distance}</p>
+                                    <p>{leader.name}: {leader.count} | Total Miles: {(leader.count * route.distance).toFixed(2)}</p>
                                 </div>
                             }
                         </div>
                     )
                 })}
+                <p>Total Trips: {completedRides.length}</p>
+                <p>Average Rating: {(totalRating/completedRides.length).toFixed(2)} ({completedRides.length})</p>
             </div>
         )
     }
@@ -67,10 +74,9 @@ function Routes() {
             <div key={route.id}>
                 <h3>{route.name}</h3>
                 <h5>{route.distance} Miles</h5>
-                <p>Total Trips: {route.rides.length}</p>
                 <div>
                     <h5>Leader Board</h5>
-                    {LeaderBoard(route, route.rides)}
+                    {LeaderBoard(route)}
                 </div>
             </div>
         )

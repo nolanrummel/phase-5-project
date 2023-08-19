@@ -9,6 +9,7 @@ from faker import Faker
 # Local imports
 from app import app
 from models import db, User, Ride, Route
+import datetime
 
 fake = Faker()
 
@@ -38,11 +39,20 @@ def create_routes():
 
 def create_rides():
     rides = []
-    for _ in range(100):
+    for _ in range(500):
+        rating = None
+        ride_date = fake.date_time_between(start_date='-9w', end_date='+1w')
+        current_date = datetime.datetime.now()
+        if (current_date > ride_date):
+            rating = randint(1, 5)
+        else:
+            rating = None
         r = Ride(
             name=fake.sentence(nb_words=4),
             user_id=randint(1, 10),
-            route_id=randint(1, 20)
+            route_id=randint(1, 20),
+            rating=rating,
+            date=ride_date
         )
         rides.append(r)
     return rides
