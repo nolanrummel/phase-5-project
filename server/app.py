@@ -15,6 +15,10 @@ from models import User, Route, Ride
 def index():
     return '<h1>Phase 5 Project Server</h1>'
 class Users(Resource):
+    def get(self):
+        users = [user.to_dict() for user in User.query.all()]
+        return make_response(users, 200)
+
     def post(self):
         data = request.get_json()
         try:
@@ -41,6 +45,13 @@ class Login(Resource):
                 return make_response({'error': 'Password does not match!'}, 404)
 
 api.add_resource(Login, '/login')
+
+class Routes(Resource):
+    def get(self):
+        routes = [route.to_dict() for route in Route.query.all()]
+        return make_response(routes, 200)
+    
+api.add_resource(Routes, '/routes')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

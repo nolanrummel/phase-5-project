@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
-import { UserContext } from '../context/user';
-import { Redirect } from 'react-router-dom/cjs/react-router-dom.min';
+import { UserContext } from '../context/user'
+import { Redirect } from 'react-router-dom/cjs/react-router-dom.min'
 
 function Team() {
     const { user } = useContext(UserContext)
@@ -17,4 +17,4 @@ function Team() {
     )
 }
 
-export default Team;
+export default Team

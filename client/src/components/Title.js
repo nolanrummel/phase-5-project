@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { UserContext } from '../context/user';
+import { UserContext } from '../context/user'
 
 function Title() {
     const { user, setUser } = useContext(UserContext)
@@ -22,4 +22,4 @@ function Title() {
     )
 }
 
-export default Title;
+export default Title

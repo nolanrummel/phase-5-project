@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react'
-import { UserContext } from '../context/user';
-import Login from "./Login";
-import Signup from "./Signup";
+import { UserContext } from '../context/user'
+import Login from "./Login"
+import Signup from "./Signup"
 
 function Home() {
     const { user, setUser } = useContext(UserContext)
@@ -46,4 +46,4 @@ function Home() {
     )
 }
 
-export default Home;
+export default Home
