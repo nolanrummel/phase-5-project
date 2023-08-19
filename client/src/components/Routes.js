@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { UserContext } from '../context/user'
+import "../styling/routes.css"
 
 function Routes() {
     const { user } = useContext(UserContext)
@@ -16,29 +17,47 @@ function Routes() {
           })
     }, [])
 
-    const LeaderBoard = (route) => {
+    const LeaderBoard = (route, rides) => {
         const userCount = {}
-        route.forEach(routeData => {
-            const userId = routeData.user.id
+        rides.forEach(rideData => {
+            const userId = rideData.user.id
             if (userId in userCount) {
                 userCount[userId]++
             } else {
                 userCount[userId] = 1
             }
         })
-        const sortedUsers = Object.keys(userCount).map(userId => ({
+        const sortedLeaders = Object.keys(userCount).map(userId => ({
             id: userId,
-            name: route.find(routeData => routeData.user.id === parseInt(userId)).user.name,
+            name: rides.find(rideData => rideData.user.id === parseInt(userId)).user.name,
             count: userCount[userId]
         }))
-        sortedUsers.sort((a, b) => b.count - a.count)
+        sortedLeaders.sort((a, b) => b.count - a.count)
         return (
             <div>
-                {sortedUsers.map(user => (
-                    <li key={user.id}>
-                        {user.name}: {user.count}
-                    </li>
-                ))}
+                {sortedLeaders.map(leader => {
+                    return (
+                        <div key={leader.id}>
+                            {user ? 
+                                <div>
+                                    {user.id === parseInt(leader.id) ?
+                                        <div key={leader.id} className='user-leader'>
+                                            <p>{leader.name}: {leader.count} | Total Miles: {leader.count * route.distance}</p>
+                                        </div>
+                                        :
+                                        <div key={leader.id}>
+                                            <p>{leader.name}: {leader.count} | Total Miles: {leader.count * route.distance}</p>
+                                        </div>
+                                    }
+                                </div>
+                                :
+                                <div key={leader.id}>
+                                    <p>{leader.name}: {leader.count} | Total Miles: {leader.count * route.distance}</p>
+                                </div>
+                            }
+                        </div>
+                    )
+                })}
             </div>
         )
     }
@@ -48,10 +67,10 @@ function Routes() {
             <div key={route.id}>
                 <h3>{route.name}</h3>
                 <h5>{route.distance} Miles</h5>
-                <p>Times Ridden: {route.rides.length}</p>
+                <p>Total Trips: {route.rides.length}</p>
                 <div>
                     <h5>Leader Board</h5>
-                    {LeaderBoard(route.rides)}
+                    {LeaderBoard(route, route.rides)}
                 </div>
             </div>
         )
@@ -61,16 +80,7 @@ function Routes() {
         <div>
             <h2>Routes Page</h2>
             {renderRoutes}
-        </div>
-        // <div>
-        //     {user ? 
-        //         <div>
-        //             <h2>Routes Page</h2>
-        //         </div>
-        //         :
-        //         <Redirect to='/home' />
-        //     }
-        // </div>  
+        </div>  
     )
 }
 
