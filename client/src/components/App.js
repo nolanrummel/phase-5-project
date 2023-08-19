@@ -1,12 +1,12 @@
-import React, {useState} from "react";
-import Title from "./Title";
-import Home from "./Home";
+import React, {useState} from "react"
+import Title from "./Title"
+import Home from "./Home"
 import Places from "./Places"
-import Routes from "./Routes";
-import Team from "./Team";
-import Navbar from "./Navbar";
+import Routes from "./Routes"
+import Team from "./Team"
+import Navbar from "./Navbar"
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
-import { UserProvider  } from "../context/user";
+import { UserProvider  } from "../context/user"
 
 function App() {
   const [user, setUser] = useState(null)
@@ -35,7 +35,7 @@ function App() {
         </Switch>
       </UserProvider>
     </Router>
-  );
+  )
 }
 
-export default App;
+export default App

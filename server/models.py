@@ -52,6 +52,8 @@ class Route(db.Model, SerializerMixin):
     rides = db.relationship('Ride', back_populates = 'route')
     users = association_proxy('rides', 'route')
 
+    serialize_rules = ('-rides.route',)
+
 class Ride(db.Model, SerializerMixin):
     __tablename__ = 'rides'
 
