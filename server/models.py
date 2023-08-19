@@ -59,6 +59,8 @@ class Ride(db.Model, SerializerMixin):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
+    date = db.Column(db.DateTime, server_default = db.func.now())
+    rating = db.Column(db.Integer)
 
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     route_id = db.Column(db.Integer, db.ForeignKey('routes.id'))
@@ -66,3 +68,5 @@ class Ride(db.Model, SerializerMixin):
     #RELATIONSHIPS
     user = db.relationship('User', back_populates = 'rides')
     route = db.relationship('Route', back_populates = 'rides')
+
+    serialize_rules = ('-route.rides',)

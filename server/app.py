@@ -53,6 +53,13 @@ class Routes(Resource):
     
 api.add_resource(Routes, '/routes')
 
+class Rides(Resource):
+    def get(self):
+        rides = [ride.to_dict() for ride in Ride.query.all()]
+        return make_response(rides, 200)
+    
+api.add_resource(Rides, '/rides')
+
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
 

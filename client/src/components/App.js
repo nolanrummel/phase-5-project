@@ -1,36 +1,43 @@
-import React, {useState} from "react"
+import React, { useState, useEffect } from "react"
 import Title from "./Title"
 import Home from "./Home"
 import Places from "./Places"
 import Routes from "./Routes"
-import Team from "./Team"
+import Rides from "./Rides"
 import Navbar from "./Navbar"
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
 import { UserProvider  } from "../context/user"
 
 function App() {
+  //here for useContext
   const [user, setUser] = useState(null)
+
+  const [currentTime, setCurrentTime] = useState([])
+
+  useEffect(() => {
+    setCurrentTime(`${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2,'0')}-${String(new Date().getDate()).padStart(2,'0')} ${String(new Date().getHours()).padStart(2,'0')}:${String(new Date().getMinutes()).padStart(2,'0')}:${String(new Date().getSeconds()).padStart(2,'0')}`)
+  }, [])
 
   return (
     <Router>
       <UserProvider>
-        <Title user={user} />
+        <Title />
         <Navbar />
         <Switch>
           <Route exact path="/">
-            <Home user={user} />
+            <Home />
           </Route>
           <Route exact path="/home">
-            <Home user={user} />
+            <Home />
           </Route>
-          <Route exact path="/team">
-            <Team user={user}/>
+          <Route exact path="/rides">
+            <Rides currentTime={currentTime} />
           </Route>
           <Route exact path="/routes">
-            <Routes user={user}/>
+            <Routes currentTime={currentTime} />
           </Route>
           <Route exact path="/places">
-            <Places user={user}/>
+            <Places />
           </Route>
         </Switch>
       </UserProvider>
