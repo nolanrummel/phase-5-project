@@ -52,19 +52,21 @@ function Rides({currentTime}) {
         console.log('post request to join ride')
     }
 
-    console.log(sliceTotal)
-
-    const handleRenderMore = (e) => {
-        setSliceNum(sliceNum + 24)
+    const handleRatingChange = (e) => {
+        console.log('patch request to change rating')
     }
 
-    const handleRenderLess = (e) => {
-        if ((sliceNum - 24) >= 24) {
-            setSliceNum(sliceNum - 24)
-        } else {
-            setSliceNum(24)
-        }
-    }
+    // const handleRenderMore = (e) => {
+    //     setSliceNum(sliceNum + 24)
+    // }
+
+    // const handleRenderLess = (e) => {
+    //     if ((sliceNum - 24) >= 24) {
+    //         setSliceNum(sliceNum - 24)
+    //     } else {
+    //         setSliceNum(24)
+    //     }
+    // }
 
     const renderUpcomingPublic = upcomingRides.slice(0, sliceNum).map((ride) => {
         return (
@@ -113,6 +115,7 @@ function Rides({currentTime}) {
                 <h3>{ride.date}</h3>
                 <h5>Route: {ride.route.name} | {ride.route.distance} Miles</h5>
                 <h5>Your Rating: {ride.rating}</h5>
+                <button onClick={handleRatingChange}>Change Your Rating</button>
                 <h3>{ride.user.name}</h3>
             </div>
         )
@@ -196,19 +199,21 @@ function Rides({currentTime}) {
                     <div></div>
                 }
             </div>
-            <div>
+            {/* <div>
                 {sliceNum > 24 ?
                     <button onClick={handleRenderLess}>Less Rides ^</button>
                     :
                     ''
                 }
                 {sliceNum < sliceTotal ?
-                    <h5>{sliceNum}</h5>
+                    <div>
+                        <h5>{sliceNum} | Slice Total: {sliceTotal}</h5>
+                        <button onClick={handleRenderMore}>More Rides V</button>
+                    </div>
                     :
-                    <h5>{sliceTotal}</h5>
-                } 
-                <button onClick={handleRenderMore}>More Rides V</button>
-            </div>
+                    <h5>Slice Total: {sliceTotal}</h5>
+                }
+            </div> */}
         </div>  
     )
 }

@@ -7,7 +7,7 @@ function Navbar() {
         <NavLink to="/">Home</NavLink>
         <NavLink to="/rides">Rides</NavLink>
         <NavLink to="/routes">Routes</NavLink>
-        <NavLink to="/places">Places</NavLink>
+        {/* <NavLink to="/places">Places</NavLink> */}
     </nav>
     )
 }
