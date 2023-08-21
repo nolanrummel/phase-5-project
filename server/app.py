@@ -16,8 +16,9 @@ def index():
     return '<h1>Phase 5 Project Server</h1>'
 class Users(Resource):
     def get(self):
-        users = [user.to_dict() for user in User.query.all()]
-        return make_response(users, 200)
+        users = User.query.all()
+        serialized_users = [user.to_dict(rules=('-rides',)) for user in users]
+        return make_response(serialized_users, 200)
 
     def post(self):
         data = request.get_json()
@@ -31,6 +32,15 @@ class Users(Resource):
         # return make_response(new_user.to_dict(only = ('id', 'user_name')), 200)
     
 api.add_resource(Users, '/users')
+
+class UserById(Resource):
+    def get(self, id):
+        user = User.query.filter_by(id=id).first()
+        if not user:
+            return make_response({'error':'User does not exist'}, 404)
+        return make_response(user.to_dict())
+    
+api.add_resource(UserById, '/users/<int:id>')
 
 class Login(Resource):
     def post(self):

@@ -22,7 +22,7 @@ class User(db.Model, SerializerMixin):
     rides = db.relationship('Ride', back_populates = 'user')
     routes = association_proxy('rides', 'user')
 
-    serialize_rules = ('-rides', '-_password_hash')
+    serialize_rules = ('-_password_hash', '-rides.user')
 
     @property
     def password_hash(self):
@@ -69,4 +69,4 @@ class Ride(db.Model, SerializerMixin):
     user = db.relationship('User', back_populates = 'rides')
     route = db.relationship('Route', back_populates = 'rides')
 
-    serialize_rules = ('-route.rides',)
+    serialize_rules = ('-route.rides', '-user.rides')
