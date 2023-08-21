@@ -13,7 +13,7 @@ function Routes({currentTime}) {
             setRouteList(data)
           })
           .catch(error => {
-            console.error('Error fetching routes:', error)
+            console.error('Error Fetching Routes:', error)
           })
     }, [])
 

@@ -40,6 +40,16 @@ class UserById(Resource):
             return make_response({'error':'User does not exist'}, 404)
         return make_response(user.to_dict())
     
+    def delete(self, id):
+        try:
+            user = User.query.filter_by(id = id).first()
+        except:
+            return make_response({"error": "User does not exist"}, 404)
+
+        db.session.delete(user)
+        db.session.commit()
+        return make_response({}, 204)
+    
 api.add_resource(UserById, '/users/<int:id>')
 
 class Login(Resource):
