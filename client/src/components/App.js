@@ -29,7 +29,7 @@ function App() {
             <Home />
           </Route>
           <Route exact path="/home">
-            <Home currentTime={currentTime} />
+            <Home />
           </Route>
           <Route exact path="/rides">
             <Rides currentTime={currentTime} />

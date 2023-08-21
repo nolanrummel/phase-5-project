@@ -29,7 +29,7 @@ function Rides({currentTime}) {
             setAllRides(data.sort((a, b) => b.date.localeCompare(a.date)))
           })
           .catch(error => {
-            console.error('Error fetching routes:', error)
+            console.error('Error Fetching Routes:', error)
           })
     }, [])
 

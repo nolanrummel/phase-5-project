@@ -4,7 +4,7 @@ import Login from "./Login"
 import Signup from "./Signup"
 import EditUser from './EditUser'
 
-function Home({currentTime}) {
+function Home() {
     const { user, setUser } = useContext(UserContext)
     const [loginSignup, setLoginSignup] = useState(true)
     const [completedRides, setCompletedRides] = useState([])
@@ -12,14 +12,10 @@ function Home({currentTime}) {
 
     useEffect(() => {
         if (user !== null) {
-            console.log('triggered')
-            console.log(currentTime)
-            console.log(user.rides)
-            setCompletedRides(user.rides.filter(ride => ride.date < currentTime))
-            console.log(completedRides)
+            setCompletedRides(user.rides.filter(ride => ride.date < `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2,'0')}-${String(new Date().getDate()).padStart(2,'0')} ${String(new Date().getHours()).padStart(2,'0')}:${String(new Date().getMinutes()).padStart(2,'0')}:${String(new Date().getSeconds()).padStart(2,'0')}`))
         }
         else {
-            console.log('no user yet')
+            // console.log('no user yet')
         }
     }, [user])
 
@@ -61,7 +57,7 @@ function Home({currentTime}) {
                     {statCreator()}
                     {editUser ?
                         <div>
-                            <EditUser />
+                            <EditUser setEditUser={setEditUser}/>
                         </div>
                         :
                         <div>
