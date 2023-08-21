@@ -17,7 +17,7 @@ def index():
 class Users(Resource):
     def get(self):
         users = User.query.all()
-        serialized_users = [user.to_dict(rules=('-rides',)) for user in users]
+        serialized_users = [user.to_dict(rules=('-rides','-_password_hash')) for user in users]
         return make_response(serialized_users, 200)
 
     def post(self):
@@ -68,14 +68,14 @@ api.add_resource(Login, '/login')
 
 class Routes(Resource):
     def get(self):
-        routes = [route.to_dict() for route in Route.query.all()]
+        routes = [route.to_dict(rules=('-rides.user._password_hash',)) for route in Route.query.all()]
         return make_response(routes, 200)
     
 api.add_resource(Routes, '/routes')
 
 class Rides(Resource):
     def get(self):
-        rides = [ride.to_dict() for ride in Ride.query.all()]
+        rides = [ride.to_dict(rules=('-user._password_hash',)) for ride in Ride.query.all()]
         return make_response(rides, 200)
     
 api.add_resource(Rides, '/rides')

@@ -27,7 +27,7 @@ function Signup() {
       body: JSON.stringify(formObj)
     })
       .then(r => {
-        if (r.ok) {
+        if(r.ok) {
           r.json()
             .then(data => {
               history.push('/home')

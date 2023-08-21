@@ -54,7 +54,11 @@ function Home() {
                     <h3>Welcome Back, {user.name} </h3>
                     <h4>User ID: {user.id}</h4>
                     <h4>User Name: {user.user_name}</h4>
-                    {statCreator()}
+                    {user.rides.length >= 1 ?
+                        statCreator()
+                        :
+                        ''
+                    }
                     {editUser ?
                         <div>
                             <EditUser setEditUser={setEditUser}/>
