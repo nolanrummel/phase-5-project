@@ -1,0 +1,41 @@
+.form {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-field {
+    /* box-shadow: none; */
+    background-color: #dad2c1;
+    border: none;
+    padding: 5px;
+    margin-top: -15px;
+    transition: transform 0.3s ease-in-out;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    color: #2a344f;
+}
+
+.input-field:hover {
+    transform: scale(1.05);
+    /* box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2); */
+}
+
+.finish-button {
+    align-self: center;
+    margin-top: 40px;
+    width: 50%;
+    padding: 5px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    border-radius: 15px 15px 15px 15px;
+    border: none;
+    background-color: #9eada5;
+    color: #56666f;
+    transition: transform 0.3s ease-in-out;
+}
+
+.finish-button:hover {
+    transform: scale(1.1);
+    background-color: #56666f;
+    color: #2a344f;
+}

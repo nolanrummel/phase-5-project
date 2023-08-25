@@ -3,6 +3,8 @@ import { UserContext } from '../context/user'
 import Login from "./Login"
 import Signup from "./Signup"
 import EditUser from './EditUser'
+import "../styling/home.css"
+import { ReactComponent as BikeIcon } from '../icons/bike-icon.svg'
 
 function Home() {
     const { user, setUser } = useContext(UserContext)
@@ -28,7 +30,6 @@ function Home() {
     }
     
     const handleEdit = (e) => {
-        console.log('edit name and maybe password')
         setEditUser(true)
     }
 
@@ -37,52 +38,83 @@ function Home() {
         completedRides.forEach(rideData => {
             totalMiles += rideData.route.distance
         })
+        const averageMiles = totalMiles / completedRides.length
+        const totalInteger = Math.floor(totalMiles)
+        const totalDecimal = Math.round((totalMiles % 1) * 100)
+        const averageInteger = Math.floor(averageMiles)
+        const averageDecimal = Math.round((averageMiles % 1) * 100)
         return (
-            <div>
-                <h5>Total Rides: {completedRides.length}</h5>
-                <h5>Total Distance: {totalMiles.toFixed(2)} Miles</h5>
-                <h5>Average Ride Distance: {(totalMiles / completedRides.length).toFixed(2)} Miles</h5>
+            <div className='stats'>
+                <div className='stat-box'>
+                    <h3 className='stat-number'>{completedRides.length}</h3>
+                    <h4 className='stat-title'>Total Rides</h4>
+                </div>
+                <div className='stat-box'>
+                    <h3 className='stat-number'>{totalInteger}<span>.{totalDecimal}</span></h3>
+                    <h4 className='stat-title'>Total Miles</h4>
+                </div>
+                <div className='stat-box'>
+                    <h3 className='stat-number'>{averageInteger}<span>.{averageDecimal}</span></h3>
+                    <h4 className='stat-title'>Average/Miles</h4>
+                </div>
             </div>
         )
     }
 
     return (
         <div>
-            <h2>Home Page</h2>
             {user ? 
-                <div>
-                    <h3>Welcome Back, {user.name} </h3>
-                    <h4>User ID: {user.id}</h4>
-                    <h4>User Name: {user.user_name}</h4>
-                    {user.rides.length >= 1 ?
-                        statCreator()
-                        :
-                        ''
-                    }
-                    {editUser ?
-                        <div>
-                            <EditUser setEditUser={setEditUser}/>
+                <div className='user-page'>
+                    <div className='user-info'>
+                        <div className='user-image'>
+                            <img src='https://www.si.com/.image/t_share/MTY4MjYxMzkwNTk4NzQzMzE3/120829062901-lance-armstrong-3-single-image-cutjpg.jpg' alt={user.name}></img>
                         </div>
-                        :
-                        <div>
-                            <button onClick={handleEdit}>Edit User</button>
+                        <div className='user-details'>
+                            <div>
+                                <h4 className='user-id-name'>User ID: {user.id} | User Name: {user.user_name}</h4>
+                                <h2 className='welcome'>Welcome Back, {user.name} </h2>
+                            </div>
+                            <div>
+                                {user.rides.length >= 1 ?
+                                    statCreator()
+                                    :
+                                    ''
+                                }
+                            </div>
                         </div>
-                    }
-                    <button onClick={handleLogOut}>Sign Out</button>
+                    </div>
+                    <div className='button-container'>
+                        {editUser ?
+                            <div className='edit-user'>
+                                <EditUser setEditUser={setEditUser}/>
+                            </div>
+                            :
+                            <div className='edit-user'>
+                                <button className='edit-user-button' onClick={handleEdit}>Edit User</button>
+                            </div>
+                        }
+                        <button className='sign-out' onClick={handleLogOut}>Sign Out</button>
+                    </div>
                 </div>
                 : 
-                <div>
+                <div className='signed-out-container'>
                     {loginSignup ?
-                        <div>
-                            <h4>Please Login</h4>
+                        <div className='group-container'>
+                            <div className='header'>
+                                <h2 className='title'>Log In</h2>
+                                <BikeIcon className='bike-icon'/>
+                            </div>
                             <Login setUser={setUser} />
-                            <p onClick={handleLoginSignup}>Or Click Me to Sign Up!</p>
+                            <p className='switch' onClick={handleLoginSignup}>Don't Have an Account? <span>Signup</span></p>
                         </div>
                         :
-                        <div>
-                            <h4>Please Sign Up</h4>
+                        <div className='group-container'>
+                            <div className='header'>
+                                <h2 className='title'>Sign Up</h2>
+                                <BikeIcon className='bike-icon'/>
+                            </div>
                             <Signup setUser={setUser} />
-                            <p onClick={handleLoginSignup}>Or Click Me to Login!</p>
+                            <p className='switch' onClick={handleLoginSignup}>Already Have an Account? <span>Login</span></p>
                         </div>
                     }
                 </div>

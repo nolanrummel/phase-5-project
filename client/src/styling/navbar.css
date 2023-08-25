@@ -1,0 +1,19 @@
+.nav-link {
+    font-family: 'Bebas Neue', sans-serif;
+    text-decoration: none;
+    color: #56666f;
+    padding-left: 10px;
+    padding-right: 10px;
+    transition: transform 0.3s ease-in-out;
+    display: inline-block;
+}
+
+.nav-link:hover {
+    color: #2a344f;
+    transform: scale(1.15);
+}
+
+.nav-link.active {
+    color: #dad2c1;
+    transform: scale(1.15);
+}

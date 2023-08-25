@@ -2,6 +2,7 @@ import React, { useContext } from 'react'
 import { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { UserContext } from '../context/user'
+import "../styling/login-signup.css"
 
 function Login() {
     const history = useHistory()
@@ -41,22 +42,26 @@ function Login() {
     }
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className='form'>
+            <h4>Username</h4>
             <input
-                placeholder='Username'
+                className='input-field'
+                placeholder=''
                 type="text"
                 id="userName"
                 value={userName}
                 onChange={(e) => setUserName(e.target.value)}
             />
+            <h4>Password</h4>
             <input
-                placeholder='Password'
+                className='input-field'
+                placeholder=''
                 type="password"
                 id="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
             />
-            <button type="submit">Login</button>
+            <button className='finish-button' type="submit">Log In</button>
         </form>
     )
 }

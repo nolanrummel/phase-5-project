@@ -7,7 +7,7 @@ import Rides from "./Rides"
 import Navbar from "./Navbar"
 import NotFound from "./NotFound"
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
-import { UserProvider  } from "../context/user"
+import { UserProvider } from "../context/user"
 
 function App() {
   //here for useContext
@@ -22,28 +22,32 @@ function App() {
   return (
     <Router>
       <UserProvider>
-        <Title />
-        <Navbar />
-        <Switch>
-          <Route exact path="/">
-            <Home />
-          </Route>
-          <Route exact path="/home">
-            <Home />
-          </Route>
-          <Route exact path="/rides">
-            <Rides currentTime={currentTime} />
-          </Route>
-          <Route exact path="/routes">
-            <Routes currentTime={currentTime} />
-          </Route>
-          <Route exact path="/places">
-            <Places />
-          </Route>
-          <Route path="*">
-            <NotFound />
-          </Route>
-        </Switch>
+        <div className="title-nav-container">
+          <Title />
+          <Navbar />
+        </div>
+        <div className="background-container">
+          <Switch>
+            <Route exact path="/">
+              <Home />
+            </Route>
+            <Route exact path="/home">
+              <Home />
+            </Route>
+            <Route exact path="/rides">
+              <Rides currentTime={currentTime} />
+            </Route>
+            <Route exact path="/routes">
+              <Routes currentTime={currentTime} />
+            </Route>
+            <Route exact path="/places">
+              <Places />
+            </Route>
+            <Route path="*">
+              <NotFound />
+            </Route>
+          </Switch>
+        </div>
       </UserProvider>
     </Router>
   )

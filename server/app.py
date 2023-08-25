@@ -38,18 +38,45 @@ class UserById(Resource):
         user = User.query.filter_by(id=id).first()
         if not user:
             return make_response({'error':'User does not exist'}, 404)
-        return make_response(user.to_dict())
+        return make_response(user.to_dict(), 200)
     
     def delete(self, id):
         try:
             user = User.query.filter_by(id = id).first()
         except:
             return make_response({"error": "User does not exist"}, 404)
-
         db.session.delete(user)
         db.session.commit()
         return make_response({}, 204)
     
+    # def patch(self, id):
+    #     try:
+    #         user = User.query.filter_by(id = id).first()
+    #         data = request.get_json()
+    #         for attr in data:
+    #             setattr(user, attr, data[attr])
+    #         db.session.commit()
+    #         return make_response(user.to_dict(), 202)
+    #     except AttributeError:
+    #         return make_response({"error": "User does not Exist!"}, 404)
+    #     except ValueError:
+    #         return make_response({"errors": ["validation errors"]}, 400)
+        
+    def patch(self, id):
+        user = User.query.filter_by(id=id).first()
+        data = request.get_json()
+        if not user :
+            return make_response({"error" : "User does not Exist!"}, 404)
+        
+        try:
+            for attr in data:
+                setattr(user, attr, data[attr])
+        except Exception as e:
+            return make_response({"error" : f"invalid request: {str(e)} "}, 404)
+
+        db.session.commit()
+        return make_response(user.to_dict(), 202)
+        
 api.add_resource(UserById, '/users/<int:id>')
 
 class Login(Resource):
@@ -79,6 +106,43 @@ class Rides(Resource):
         return make_response(rides, 200)
     
 api.add_resource(Rides, '/rides')
+
+class RideById(Resource):
+    def get(self, id):
+        ride = Ride.query.filter_by(id=id).first()
+        if not ride:
+            return make_response({'error':'Ride does not exist'}, 404)
+        return make_response(ride.to_dict(rules=('-user._password_hash',)), 200)
+    
+    # def patch(self, id):
+    #     try:
+    #         ride = Ride.query.filter_by(id = id).first()
+    #         data = request.get_json()
+    #         for attr in data:
+    #             setattr(ride, attr, data[attr])
+    #         db.session.commit()
+    #         return make_response(ride.to_dict(), 202)
+    #     except AttributeError:
+    #         return make_response({"error": "User does not Exist!"}, 404)
+    #     except ValueError:
+    #         return make_response({"errors": ["validation errors"]}, 400)
+    
+    def patch(self, id):
+        ride = Ride.query.filter_by(id=id).first()
+        data = request.get_json()
+        if not ride :
+            return make_response({"error" : "no ride exists"}, 404)
+        
+        try:
+            for attr in data:
+                setattr(ride, attr, data[attr])
+        except Exception as e:
+            return make_response({"error" : f"invalid request: {str(e)} "}, 404)
+
+        db.session.commit()
+        return make_response(ride.to_dict())
+
+api.add_resource(RideById, '/rides/<int:id>')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

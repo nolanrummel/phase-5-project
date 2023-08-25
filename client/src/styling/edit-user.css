@@ -1,0 +1,135 @@
+.edit-container {
+    background-color: #56666f;
+    margin-top: 50px;
+    margin-bottom: 35px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.x-to-exit {
+    position: absolute;
+    top: -45px;
+    right: 0px;
+    color: #9eada5;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 300;
+    font-size: 16pt;
+    cursor: pointer;
+}
+
+.edit-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    align-self: center;
+    padding-top: 50px;
+    padding-bottom: 5px;
+    width: 60%;
+    /* background-color: chocolate; */
+}
+
+.edit-bike-icon {
+    fill: #9eada5;
+    height: 50px;
+    width: 50px;
+    /* background-color: aquamarine; */
+}
+
+.edit-title {
+    color: #9eada5;
+    /* padding-top: 40px; */
+}
+
+.edit-form {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.edit-name {
+    color: #9eada5;
+    padding-left: 20%;
+}
+
+.edit-lockup {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    align-self: center;
+    width: 60%;
+    margin-top: -15px;
+    /* background-color: burlywood; */
+}
+
+.edit-input-field {
+    background-color: #2a344f;
+    border: none;
+    padding: 5px;
+    transition: transform 0.3s ease-in-out;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    color: #dad2c1;
+    width: 100%;
+}
+
+.edit-input-field:hover {
+    transform: scale(1.05);
+}
+
+.change-button {
+    width: 30%;
+    padding: 5px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    border-radius: 15px 15px 15px 15px;
+    border: none;
+    background-color: #9eada5;
+    color: #56666f;
+    transition: transform 0.3s ease-in-out;
+    margin-left: 20px;
+}
+
+.change-button:hover {
+    transform: scale(1.1);
+    background-color: #2a344f;
+}
+
+.finish-edit-button {
+    align-self: center;
+    margin-top: 60px;
+    width: 40%;
+    padding: 5px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    border-radius: 15px 15px 15px 15px;
+    border: none;
+    background-color: #9eada5;
+    color: #56666f;
+    transition: transform 0.3s ease-in-out;
+}
+
+.finish-edit-button:hover {
+    transform: scale(1.1);
+    background-color: #2a344f;
+}
+
+.delete-user-button {
+    align-self: center;
+    margin-top: 30px;
+    margin-bottom: 50px;
+    width: 40%;
+    padding: 5px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    border-radius: 15px 15px 15px 15px;
+    border: 2px solid #9eada5;
+    background-color: #56666f;
+    color: #9eada5;
+    transition: transform 0.3s ease-in-out;
+}
+
+.delete-user-button:hover {
+    transform: scale(1.1);
+    color: #2a344f;
+}

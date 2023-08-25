@@ -19,7 +19,7 @@ class User(db.Model, SerializerMixin):
     #favorite_places = db.Column(ARRAY(db.String))
 
     #RELATIONSHIPS
-    rides = db.relationship('Ride', back_populates = 'user')
+    rides = db.relationship('Ride', back_populates = 'user', cascade = "all, delete-orphan")
     routes = association_proxy('rides', 'user')
 
     serialize_rules = ('-rides.user',)
