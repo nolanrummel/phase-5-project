@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { UserContext } from '../context/user'
+import Rating from './Rating'
 import "../styling/routes.css"
 
 function Routes({currentTime}) {
@@ -19,8 +20,8 @@ function Routes({currentTime}) {
 
     const LeaderBoard = (route) => {
         const rides = route.rides
-        const completedRides = rides.filter(item => item.date < currentTime)
         const userCount = {}
+        const completedRides = rides.filter(item => item.date < currentTime)
         let totalRating = 0
         completedRides.forEach(rideData => {
             const userId = rideData.user.id
@@ -31,6 +32,7 @@ function Routes({currentTime}) {
                 userCount[userId] = 1
             }
         })
+        const averageRating = (totalRating/completedRides.length).toFixed(2)
         const sortedLeaders = Object.keys(userCount).map(userId => ({
             id: userId,
             name: rides.find(rideData => rideData.user.id === parseInt(userId)).user.name,
@@ -64,7 +66,8 @@ function Routes({currentTime}) {
                     )
                 })}
                 <p>Total Trips: {completedRides.length}</p>
-                <p>Average Rating: {(totalRating/completedRides.length).toFixed(2)} ({completedRides.length})</p>
+                {/* <p>Average Rating: {(totalRating/completedRides.length).toFixed(2)} ({completedRides.length})</p> */}
+                <p>Average Rating: {averageRating}<Rating rating={averageRating}/>({completedRides.length})</p>
             </div>
         )
     }

@@ -1,0 +1,17 @@
+.filled-star {
+    color: gold;
+    cursor: pointer;
+}
+
+.empty-star {
+    color: red;
+    cursor: pointer;
+}
+
+.fractional-star {
+    display: inline-block;
+    -webkit-text-fill-color: transparent;
+    /* background: linear-gradient(to right, gold 50%, red 50%); */
+    background-clip: text;
+    /* -webkit-background-clip: text; */
+}
