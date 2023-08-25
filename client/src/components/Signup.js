@@ -2,12 +2,14 @@ import React, { useContext } from 'react'
 import { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { UserContext } from '../context/user'
+import "../styling/login-signup.css"
 
 
 function Signup() {
 
   const history = useHistory()
 
+  const [name, setName] = useState('')
   const [userName, setUserName] = useState('')
   const [password, setPassword] = useState('')
 
@@ -18,7 +20,7 @@ function Signup() {
     const formObj = {
       'userName': userName,
       'password': password,
-      'name': userName
+      'name': name
     }
 
     fetch('http://127.0.0.1:5555/users', {
@@ -44,24 +46,36 @@ function Signup() {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className='form'>
+      <h4>Name</h4>
       <input
-        placeholder='Username'
+        className='input-field'
+        placeholder=''
+        type="text"
+        id="name"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
+      <h4>Username</h4>
+      <input
+        className='input-field'
+        placeholder=''
         type="text"
         id="userName"
         value={userName}
         onChange={(e) => setUserName(e.target.value)}
       />
-
+      <h4>Password</h4>
       <input
-        placeholder='Password'
+        className='input-field'
+        placeholder=''
         type="password"
         id="password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
 
-      <button type="submit">Signup</button>
+      <button className='finish-button' type="submit">Signup</button>
     </form>
   )
 }

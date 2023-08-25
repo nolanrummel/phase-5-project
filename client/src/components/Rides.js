@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { UserContext } from '../context/user'
+import "../styling/rides.css"
 
 function Rides({currentTime}) {
     const { user } = useContext(UserContext)
@@ -9,6 +10,9 @@ function Rides({currentTime}) {
     const [pastRides, setPastRides] = useState([])
     const [userUpRides, setUserUpRides] = useState([])
     const [publicPtRides, setPublicPtRides] = useState([])
+
+    const [detailRide, setDetailRide] = useState('')
+    const [rating, setRating] = useState(1)
 
     const [renderTimeline, setRenderTimeline] = useState('upcoming')
     const [renderOwnership, setRenderOwnership] = useState('public')
@@ -52,8 +56,50 @@ function Rides({currentTime}) {
         console.log('post request to join ride')
     }
 
+    const handleDetail = (rideId) => {
+        setDetailRide(rideId)
+    }
+
     const handleRatingChange = (e) => {
-        console.log('patch request to change rating')
+        e.preventDefault()
+        const formObj = {
+            'rating': rating
+        }
+        fetch(`http://127.0.0.1:5555/rides/${detailRide.id}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formObj)
+        })
+            .then(r => {
+                if(r.ok) {
+                    r.json()
+                        .then(data => {
+                            console.log(data)
+                        })
+                }
+                else {
+                    r.json()
+                        .then(data => {
+                            console.log(data)
+                        })
+                }
+            })
+        return (
+            <div>
+                <form onSubmit={handleRatingChange}>
+                    <label>
+                        <input 
+                            placeholder='1'
+                            type='number'
+                            id='rating'
+                            value={rating}
+                            onChange={(e) => setRating(e.target.value)}
+                        />
+                    </label>
+                    <button type='submit'>Confirm Changes</button>
+                </form>
+            </div>
+        )
     }
 
     // const handleRenderMore = (e) => {
@@ -115,8 +161,13 @@ function Rides({currentTime}) {
                 <h3>{ride.date}</h3>
                 <h5>Route: {ride.route.name} | {ride.route.distance} Miles</h5>
                 <h5>Your Rating: {ride.rating}</h5>
-                <button onClick={handleRatingChange}>Change Your Rating</button>
-                <h3>{ride.user.name}</h3>
+                {detailRide === ride.id ?
+                    <div>
+                        <button onClick={handleRatingChange}>Change Your Rating</button>
+                    </div>
+                    :
+                    <button onClick={() => handleDetail(ride.id)}>More Info</button>
+                }
             </div>
         )
     })
@@ -125,59 +176,74 @@ function Rides({currentTime}) {
         setPastView(false)
         setRenderTimeline('upcoming')
         setSliceTotal(upcomingRides.length)
+        setDetailRide('')
     }
 
     const handlePast = (e) => {
         setPastView(true)
         setRenderTimeline('past')
         setSliceTotal(pastRides.length)
+        setDetailRide('')
     }
 
     const handleUser = (e) => {
         setUserView(false)
         setRenderOwnership('user')
         setSliceTotal(userUpRides.length)
+        setDetailRide('')
     }
 
     const handlePublic = (e) => {
         setUserView(true)
         setRenderOwnership('public')
         setSliceTotal(publicPtRides.length)
+        setDetailRide('')
     }
 
     return (
-        <div>
-            <h2>Rides Page</h2>
-            <div>
+        <div className='container'>
+            {user ? 
+                ''
+                :
+                <div className='login-button-container'>
+                    <Link to='/home'>
+                        <button className='login-button'>Login to View Your Rides</button>
+                    </Link>
+                </div>
+            }
+            <div className='views-header'>
                 {user ? 
                     <div>
                         {userView ?
-                            <button onClick={handleUser}>Show My Rides</button>
+                            <div className='user-changer'>
+                                <h4 className='user-button' onClick={handleUser}>My Rides</h4>
+                                <h4 className='public-button-active'>Public Rides</h4>
+                            </div>
                             :
-                            <button onClick={handlePublic}>Show All Rides</button>
+                            <div className='user-changer'>
+                                <h4 className='user-button-active'>My Rides</h4>
+                                <h4 className='public-button' onClick={handlePublic}>Public Rides</h4>
+                            </div>
                         }
                     </div>
                     :
-                    <div>
-                        <Link to='/home'>
-                            <button>Login to View Your Rides</button>
-                        </Link>
-                    </div>
+                    ''
                 }
                 {pastView ?
-                    <div>
-                        <button onClick={handleUpcoming}>Click to View Upcoming Open Rides</button>
+                    <div className='view-changer'>
+                        <h4 className='upcoming-button' onClick={handleUpcoming}>Upcoming Rides</h4>
+                        <h4 className='past-button-active'>Past Rides</h4>
                     </div>
                     :
-                    <div>
-                        <button onClick={handlePast}>Click to View Past Rides</button>
+                    <div className='view-changer'>
+                        <h4 className='upcoming-button-active'>Upcoming Rides</h4>
+                        <a className='past-button' onClick={handlePast}>Past Rides</a>
                     </div>
                 }
             </div>
             <div>
                 {renderTimeline === 'upcoming' && renderOwnership === 'public' ? 
                     <div>
-                        <h2>Upcoming Rides</h2>
                         {renderUpcomingPublic}
                     </div>
                     : renderTimeline === 'past' && renderOwnership === 'public' ?

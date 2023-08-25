@@ -5,3 +5,68 @@
   --text: hsla(0, 0%, 100%, 0.88);
 }
 
+/* font-family: 'Yeseva One', cursive; */
+@import url('https://fonts.googleapis.com/css2?family=Yeseva+One&display=swap');
+
+/* font-family: 'Bebas Neue', sans-serif; */
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
+/* font-family: 'Nunito', sans-serif; */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;0,1000;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900;1,1000&display=swap');
+
+body {
+  text-align: center;
+  background-color: #9eada5;
+  display: flex;
+  justify-content: center;
+  padding-bottom: 75px;
+}
+
+h1 {
+  font-family: 'Yeseva One', cursive;
+  color: #2a344f;
+}
+
+h2 {
+  font-family: 'Yeseva One', cursive;
+  color: #56666f;
+}
+
+h3 {
+  font-family: 'Bebas Neue', sans-serif;
+  color: #56666f;
+}
+
+h4 {
+  font-family: 'Bebas Neue', sans-serif;
+  color: #56666f;
+}
+
+h5 {
+  font-family: 'Bebas Neue', sans-serif;
+  color: #56666f;
+}
+
+p {
+  font-family: 'Nunito', sans-serif;
+}
+
+.background-container {
+  background-color: #e6e2d4;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  padding-left: 50px;
+  padding-right: 50px;
+  /* min-width: 50vw;
+  max-width: 70vw; */
+  min-height: 62vh;
+  width: 60vw;
+  display: flex;
+  justify-content: center;
+  /* align-items: center; */
+}
+
+.title-nav-container {
+  padding-top: 15px;
+  padding-bottom: 35px;
+}
