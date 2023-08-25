@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { UserContext } from '../context/user'
+import Rating from './Rating'
 import "../styling/rides.css"
 
 function Rides({currentTime}) {
@@ -12,7 +13,7 @@ function Rides({currentTime}) {
     const [publicPtRides, setPublicPtRides] = useState([])
 
     const [detailRide, setDetailRide] = useState('')
-    const [rating, setRating] = useState(1)
+    const [rating, setRating] = useState('')
 
     const [renderTimeline, setRenderTimeline] = useState('upcoming')
     const [renderOwnership, setRenderOwnership] = useState('public')
@@ -58,6 +59,7 @@ function Rides({currentTime}) {
 
     const handleDetail = (rideId) => {
         setDetailRide(rideId)
+        setRating('')
     }
 
     const handleRatingChange = (e) => {
@@ -84,22 +86,6 @@ function Rides({currentTime}) {
                         })
                 }
             })
-        return (
-            <div>
-                <form onSubmit={handleRatingChange}>
-                    <label>
-                        <input 
-                            placeholder='1'
-                            type='number'
-                            id='rating'
-                            value={rating}
-                            onChange={(e) => setRating(e.target.value)}
-                        />
-                    </label>
-                    <button type='submit'>Confirm Changes</button>
-                </form>
-            </div>
-        )
     }
 
     // const handleRenderMore = (e) => {
@@ -137,7 +123,7 @@ function Rides({currentTime}) {
                 <h3>{ride.name}</h3>
                 <h3>{ride.date}</h3>
                 <h5>Route: {ride.route.name} | {ride.route.distance} Miles</h5>
-                <h5>Rating: {ride.rating}</h5>
+                <h5>Rating: <Rating rating={ride.rating} /></h5>
                 <h3>{ride.user.user_name}</h3>
             </div>
         )
@@ -161,9 +147,23 @@ function Rides({currentTime}) {
                 <h3>{ride.date}</h3>
                 <h5>Route: {ride.route.name} | {ride.route.distance} Miles</h5>
                 <h5>Your Rating: {ride.rating}</h5>
+                <h5>Your Rating: <Rating rating={ride.rating} editing={true}/></h5>
                 {detailRide === ride.id ?
                     <div>
-                        <button onClick={handleRatingChange}>Change Your Rating</button>
+                        <div>
+                            <form onSubmit={handleRatingChange}>
+                                <label>
+                                    <input 
+                                        className='input-field'
+                                        type='number'
+                                        id='rating'
+                                        value={rating}
+                                        onChange={(e) => setRating(e.target.value)}
+                                    />
+                                </label>
+                                <button type='submit'>Confirm Changes</button>
+                            </form>
+                        </div>
                     </div>
                     :
                     <button onClick={() => handleDetail(ride.id)}>More Info</button>
