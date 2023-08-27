@@ -1,11 +1,19 @@
-.filled-star {
-    color: gold;
+.edit-filled-star {
+    color: green;
     cursor: pointer;
 }
 
-.empty-star {
-    color: red;
+.edit-empty-star {
+    color: blue;
     cursor: pointer;
+}
+
+.filled-star {
+    color: #56666f;
+}
+
+.empty-star {
+    color: #9eada5;
 }
 
 .fractional-star {

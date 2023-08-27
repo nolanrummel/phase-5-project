@@ -55,7 +55,7 @@ function Home() {
                 </div>
                 <div className='stat-box'>
                     <h3 className='stat-number'>{averageInteger}<span>.{averageDecimal}</span></h3>
-                    <h4 className='stat-title'>Average/Miles</h4>
+                    <h4 className='stat-title'>Avg/Miles</h4>
                 </div>
             </div>
         )

@@ -1,8 +1,9 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { UserContext } from '../context/user'
 import Rating from './Rating'
 import "../styling/rides.css"
+import RenderRides from './RenderRides'
 
 function Rides({currentTime}) {
     const { user } = useContext(UserContext)
@@ -22,6 +23,9 @@ function Rides({currentTime}) {
 
     const [sliceNum, setSliceNum] = useState(24)
     const [sliceTotal, setSliceTotal] = useState(24)
+
+    const divRef = useRef(null)
+    const [mapHeight, setMapHeight] = useState('')
 
     useEffect(() => {
         setRenderOwnership('public')
@@ -53,40 +57,29 @@ function Rides({currentTime}) {
         }
     }, [renderOwnership])
 
+    const handleResize = () => {
+        window.requestAnimationFrame(() => {
+            const div = divRef.current;
+            if (div) {
+                const rect = div.getBoundingClientRect();
+                setMapHeight(rect.width * 0.75);
+            }
+        });
+    };
+    handleResize()
+
     const handleJoin = (e) => {
         console.log('post request to join ride')
     }
 
     const handleDetail = (rideId) => {
         setDetailRide(rideId)
-        setRating('')
     }
 
-    const handleRatingChange = (e) => {
-        e.preventDefault()
-        const formObj = {
-            'rating': rating
-        }
-        fetch(`http://127.0.0.1:5555/rides/${detailRide.id}`, {
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(formObj)
-        })
-            .then(r => {
-                if(r.ok) {
-                    r.json()
-                        .then(data => {
-                            console.log(data)
-                        })
-                }
-                else {
-                    r.json()
-                        .then(data => {
-                            console.log(data)
-                        })
-                }
-            })
-    }
+    // const handleDetail = (rideId) => {
+    //     setDetailRide(rideId)
+    //     setRating('')
+    // }
 
     // const handleRenderMore = (e) => {
     //     setSliceNum(sliceNum + 24)
@@ -102,8 +95,9 @@ function Rides({currentTime}) {
 
     const renderUpcomingPublic = upcomingRides.slice(0, sliceNum).map((ride) => {
         return (
-            <div key={ride.id}>
-                <h3>{ride.name}</h3>
+            <div className='ride-card' key={ride.id}>
+                <h2 className='ride-card-title' style={{width: (mapHeight * 1.33) + 'px'}}>{ride.name}</h2>
+                <div ref={divRef} className='map-preview' style={{height: mapHeight + 'px'}}></div>
                 <h3>{ride.date}</h3>
                 <h5>Route: {ride.route.name} | {ride.route.distance} Miles</h5>
                 {user ? 
@@ -117,22 +111,56 @@ function Rides({currentTime}) {
         )
     })
 
+    const pastPublic = true
+    console.log(detailRide)
+
     const renderPastPublic = pastRides.slice(0, sliceNum).map((ride) => {
+        const month = ride.date.slice(5, 7)
+        const day = ride.date.slice(8, 10)
+        const hour = ride.date.slice(11, 13)
+        const minutes = ride.date.slice(14, 16)
+        const milesInteger = Math.floor(ride.route.distance)
+        const milesDecimal = Math.round((ride.route.distance % 1) * 100)
+        
+        //console.log(month + '/' + day + ' ' + hour + ':' + minutes + `${hour >= 12 ? 'PM' : 'AM'}`)
         return (
-            <div key={ride.id}>
-                <h3>{ride.name}</h3>
-                <h3>{ride.date}</h3>
-                <h5>Route: {ride.route.name} | {ride.route.distance} Miles</h5>
-                <h5>Rating: <Rating rating={ride.rating} /></h5>
-                <h3>{ride.user.user_name}</h3>
+            <div>
+                {detailRide === ride.id ?
+                    <div></div>
+                    :
+                    <div className='ride-card' onClick={() => handleDetail(ride.id)} key={ride.id}>
+                        <h2 className='ride-card-title' style={{width: (mapHeight * 1.33) + 'px'}}>{ride.name}</h2>
+                        <div className='map-date-container'>
+                            <div ref={divRef} className='map-preview' style={{height: mapHeight + 'px'}}></div>
+                            <div className='date'>
+                                <h3 className='date-number'>{month}</h3>
+                                <div className='divider'></div>
+                                <h3 className='date-number'>{day}</h3>
+                            </div>
+                        </div>
+                        <div className='miles-rating-lockup'>
+                            <div className='miles-lockup'>
+                                <h3 className='miles-integer'>{milesInteger}</h3>
+                                <h5>.{milesDecimal} Miles</h5>
+                            </div>
+                            <h5><Rating rating={ride.rating} pastPublic={pastPublic}/></h5>
+                        </div>
+                        {/* <h3>{ride.date}</h3> */}
+                        {/* <h5>Route: {ride.route.name} | {ride.route.distance} Miles</h5> */}
+                        {/* <h3>{ride.user.user_name}</h3> */}
+                        {/* description? */}
+                        <div className='color-bar' style={{backgroundColor: '#2a344f'}}></div>
+                    </div>
+                }
             </div>
         )
     })
 
     const renderUpcomingUser = userUpRides.slice(0, sliceNum).map((ride) => {
         return (
-            <div key={ride.id}>
-                <h3>{ride.name}</h3>
+            <div className='ride-card' key={ride.id}>
+                <h2 className='ride-card-title' style={{width: (mapHeight * 1.33) + 'px'}}>{ride.name}</h2>
+                <div ref={divRef} className='map-preview' style={{height: mapHeight + 'px'}}></div>
                 <h3>{ride.date}</h3>
                 <h5>Route: {ride.route.name} | {ride.route.distance} Miles</h5>
                 <h5>{ride.user.name}</h5>
@@ -142,32 +170,12 @@ function Rides({currentTime}) {
 
     const renderPastUser = publicPtRides.slice(0, sliceNum).map((ride) => {
         return (
-            <div key={ride.id}>
-                <h3>{ride.name}</h3>
+            <div className='ride-card' key={ride.id}>
+                <h2 className='ride-card-title' style={{width: (mapHeight * 1.33) + 'px'}}>{ride.name}</h2>
+                <div ref={divRef} className='map-preview' style={{height: mapHeight + 'px'}}></div>
                 <h3>{ride.date}</h3>
                 <h5>Route: {ride.route.name} | {ride.route.distance} Miles</h5>
-                <h5>Your Rating: {ride.rating}</h5>
-                <h5>Your Rating: <Rating rating={ride.rating} editing={true}/></h5>
-                {detailRide === ride.id ?
-                    <div>
-                        <div>
-                            <form onSubmit={handleRatingChange}>
-                                <label>
-                                    <input 
-                                        className='input-field'
-                                        type='number'
-                                        id='rating'
-                                        value={rating}
-                                        onChange={(e) => setRating(e.target.value)}
-                                    />
-                                </label>
-                                <button type='submit'>Confirm Changes</button>
-                            </form>
-                        </div>
-                    </div>
-                    :
-                    <button onClick={() => handleDetail(ride.id)}>More Info</button>
-                }
+                <h5>Your Rating: <Rating rating={ride.rating} rideId={ride.id}/></h5>
             </div>
         )
     })
@@ -241,24 +249,22 @@ function Rides({currentTime}) {
                     </div>
                 }
             </div>
-            <div>
+            <div className='card-container'>
                 {renderTimeline === 'upcoming' && renderOwnership === 'public' ? 
-                    <div>
+                    <div className='card-grid'>
                         {renderUpcomingPublic}
                     </div>
                     : renderTimeline === 'past' && renderOwnership === 'public' ?
                     <div>
-                        <h2>Past Rides</h2>
-                        {renderPastPublic}
+                        {/* {renderPastPublic} */}
+                        <RenderRides rides={pastRides} sliceNum={sliceNum}/>
                     </div>
                     :  renderTimeline === 'upcoming' && renderOwnership === 'user' ?
-                    <div>
-                        <h2>Your Upcoming Rides</h2>
+                    <div className='card-grid'> 
                         {renderUpcomingUser}
                     </div>
                     : renderTimeline === 'past' && renderOwnership === 'user' ?
-                    <div>
-                        <h2>Your Past Rides</h2>
+                    <div className='card-grid'>
                         {renderPastUser}
                     </div>
                     :
