@@ -25,15 +25,32 @@
     /* background-color: forestgreen; */
 }
 
-.ride-card {
+.edit-ride-card {
     position: relative;
-    padding-top: 10px;
+    padding-top: 20px;
     padding-bottom: 0px;
-    padding-left: 25px;
-    padding-right: 25px;
+    padding-left: 50px;
+    padding-right: 50px;
     background-color: #dad2c1;
     transition: all 0.3s ease-in-out;
     /* background-color: blue; */
+}
+
+.ride-card {
+    position: relative;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 25px;
+    padding-right: 25px;
+    background-color: #dad2c1;
+    /* transition: all 0.3s ease-in-out; */
+    /* background-color: blue; */
+}
+
+.edit-ride-card-title {
+    color: #56666f;
+    /* margin-top: 10px;
+    margin-bottom: 15px; */
 }
 
 .ride-card-title {
@@ -46,14 +63,54 @@
     /* background-color: crimson; */
 }
 
+.user-title {
+    font-size: 10.5pt;
+    color: #9eada5;
+    margin-top: -12px;
+    margin-bottom: 10px;
+}
+
+.user-title span {
+    color: #56666f;
+}
+
 .map-date-container {
     position: relative;
+    /* background-color: chocolate; */
 }
 
 .map-preview {
     width: 100%;
     height: 20px;
     background-color: cadetblue;
+}
+
+.edit-lockup {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    /* background-color: cornflowerblue; */
+}
+
+.edit-date-lockup {
+    display: flex;
+    align-items: center;
+    /* margin-top: -15px; */
+}
+
+.edit-date {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-bottom: .5px solid #9eada5;
+    width: 40px;
+    /* max-width: 40px; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #9eada5;
 }
 
 .date {
@@ -64,6 +121,7 @@
     padding-left: 5px;
     padding-right: 5px;
     width: 25%;
+    max-width: 40px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -76,20 +134,120 @@
     margin-bottom: 0px;
 }
 
+.time {
+    font-size: 24pt;
+    padding: 7px;
+    padding-left: 25px;
+    padding-right: 25px;
+    border: 2px solid #9eada5;
+    /* width: 100%; */
+}
+
+.time span {
+    font-size: 14pt;
+}
+
+.edit-miles-rating-lockup {
+    /* width: 60%; */
+    /* background-color: green; */
+}
+
+.edit-route-lockup {
+    display: flex;
+    align-items: baseline;
+    /* background-color: blue; */
+}
+
 .miles-rating-lockup {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    margin-top: -15px;
+    margin-top: -7px;
+    /* background-color: green; */
 }
 
 .miles-lockup {
     display: flex;
     align-items: baseline;
+    margin-top: 5px;
+    /* background-color: red; */
+}
+
+.small-miles-integer {
+    font-size: 14pt;
+    padding: 4px;
+    padding-left: 15px;
+    padding-right: 15px;
+    border: 2px solid #9eada5;
+    /* background-color: blueviolet; */
+}
+
+.small-miles-integer span {
+    font-size: 10.5pt;
+}
+
+.edit-miles-lockup {
+    display: flex;
+    align-items: baseline;
+    padding: 7px;
+    border: 2px solid #9eada5;
+    /* background-color: #9eada5; */
+}
+
+.edit-miles-integer {
+    font-size: 24pt;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-left: 25px;
+    padding-right: 25px;
+}
+
+.edit-miles-integer span {
+    font-size: 14pt;
+}
+
+.edit-route {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 15px;
+    padding-right: 15px;
+    display: flex;
+    flex-direction: column;
+    /* background-color: #9eada5; */
+}
+
+.edit-route-name {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.route-divider {
+    margin-top: -1px;
+    margin-left: -2%;
+    width: 104%;
+    height: 2px;
+    background-color: #9eada5;
 }
 
 .miles-integer {
-    font-size: 20pt;
+    font-size: 24pt;
+}
+
+.miles-integer span {
+    font-size: 14pt;
+}
+
+.time {
+    font-size: 24pt;
+    padding: 7px;
+    padding-left: 25px;
+    padding-right: 25px;
+    border: 2px solid #9eada5;
+    /* width: 100%; */
+}
+
+.time span {
+    font-size: 14pt;
 }
 
 .color-bar {

@@ -112,7 +112,6 @@ function Rides({currentTime}) {
     })
 
     const pastPublic = true
-    console.log(detailRide)
 
     const renderPastPublic = pastRides.slice(0, sliceNum).map((ride) => {
         const month = ride.date.slice(5, 7)
@@ -123,6 +122,7 @@ function Rides({currentTime}) {
         const milesDecimal = Math.round((ride.route.distance % 1) * 100)
         
         //console.log(month + '/' + day + ' ' + hour + ':' + minutes + `${hour >= 12 ? 'PM' : 'AM'}`)
+        
         return (
             <div>
                 {detailRide === ride.id ?
@@ -256,8 +256,7 @@ function Rides({currentTime}) {
                     </div>
                     : renderTimeline === 'past' && renderOwnership === 'public' ?
                     <div>
-                        {/* {renderPastPublic} */}
-                        <RenderRides rides={pastRides} sliceNum={sliceNum}/>
+                        <RenderRides rides={pastRides} sliceNum={sliceNum} setSliceNum={setSliceNum}/>
                     </div>
                     :  renderTimeline === 'upcoming' && renderOwnership === 'user' ?
                     <div className='card-grid'> 

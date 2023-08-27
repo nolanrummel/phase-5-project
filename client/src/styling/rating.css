@@ -10,10 +10,12 @@
 
 .filled-star {
     color: #56666f;
+    font-size: 13pt;
 }
 
 .empty-star {
     color: #9eada5;
+    font-size: 13pt;
 }
 
 .fractional-star {
