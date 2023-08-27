@@ -2,10 +2,11 @@ import React, { useContext, useState } from 'react'
 import { UserContext } from '../context/user'
 import "../styling/rating.css"
 
-function Rating({rating, editing}) {
+function Rating({rating, pastPublic, rideId}) {
     const { user } = useContext(UserContext)
 
     const [starRating, setStarRating] = useState(0)
+    const [editing, setEditing] = useState(false)
 
     const handleStarClick = (selectedRating) => {
         setStarRating(selectedRating)
@@ -20,8 +21,37 @@ function Rating({rating, editing}) {
     } else {
         arrayLength = 5 - averageInteger
     }
-    console.log(arrayLength)
-    console.log(averageDecimal)
+
+    const handleRatingChange = (e) => {
+        setEditing(!editing)
+    }
+
+    const confirmRating = (e) => {
+        e.preventDefault()
+        console.log(rideId)
+        const formObj = {
+            'rating': rating
+        }
+        fetch(`http://127.0.0.1:5555/rides/${rideId}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formObj)
+        })
+            .then(r => {
+                if(r.ok) {
+                    r.json()
+                        .then(data => {
+                            console.log(data)
+                        })
+                }
+                else {
+                    r.json()
+                        .then(data => {
+                            console.log(data)
+                        })
+                }
+            })
+    }
 
     return (
         <div>
@@ -31,11 +61,13 @@ function Rating({rating, editing}) {
                         <span
                             key={index}
                             onClick={() => handleStarClick(index +1)}
-                            className={index < starRating ? 'filled-star' : 'empty-star'}
+                            className={index < starRating ? 'edit-filled-star' : 'edit-empty-star'}
                         >
                             ★
                         </span>
                     ))}
+                    <button onClick={confirmRating}>Confirm Changes</button>
+                    <button onClick={handleRatingChange}>Cancel Editing</button>
                 </div>
                 :
                 <div>
@@ -55,6 +87,7 @@ function Rating({rating, editing}) {
                                 ★
                             </span>
                         ))}
+                        {pastPublic ? '' : <button onClick={handleRatingChange}>Change Rating</button>}
                     </div>
                 </div>
             }

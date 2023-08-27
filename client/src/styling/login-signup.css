@@ -1,6 +1,7 @@
 .form {
     display: flex;
     flex-direction: column;
+    /* background-color: red; */
 }
 
 .input-field {
@@ -32,6 +33,7 @@
     background-color: #9eada5;
     color: #56666f;
     transition: transform 0.3s ease-in-out;
+    cursor: pointer;
 }
 
 .finish-button:hover {

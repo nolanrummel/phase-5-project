@@ -100,6 +100,7 @@
     background-color: #9eada5;
     color: #56666f;
     transition: transform 0.3s ease-in-out;
+    cursor: pointer;
 }
 
 .edit-user-button:hover {
@@ -125,6 +126,7 @@
     color: #56666f;
     transition: transform 0.3s ease-in-out;
     margin-top: 15px;
+    cursor: pointer;
 }
 
 .sign-out:hover {

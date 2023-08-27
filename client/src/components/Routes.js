@@ -66,7 +66,6 @@ function Routes({currentTime}) {
                     )
                 })}
                 <p>Total Trips: {completedRides.length}</p>
-                {/* <p>Average Rating: {(totalRating/completedRides.length).toFixed(2)} ({completedRides.length})</p> */}
                 <p>Average Rating: {averageRating}<Rating rating={averageRating}/>({completedRides.length})</p>
             </div>
         )

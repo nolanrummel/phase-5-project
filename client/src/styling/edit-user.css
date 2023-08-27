@@ -88,6 +88,7 @@
     color: #56666f;
     transition: transform 0.3s ease-in-out;
     margin-left: 20px;
+    cursor: pointer;
 }
 
 .change-button:hover {
@@ -107,6 +108,7 @@
     background-color: #9eada5;
     color: #56666f;
     transition: transform 0.3s ease-in-out;
+    cursor: pointer;
 }
 
 .finish-edit-button:hover {
@@ -127,6 +129,7 @@
     background-color: #56666f;
     color: #9eada5;
     transition: transform 0.3s ease-in-out;
+    cursor: pointer;
 }
 
 .delete-user-button:hover {
