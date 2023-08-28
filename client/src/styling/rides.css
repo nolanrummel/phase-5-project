@@ -294,6 +294,15 @@
     /* background-color: chocolate; */
 }
 
+.creator-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 30px;
+    background-color: #56666f;
+}
+
 .login-button-container {
     width: 30%;
     margin-bottom: 20px;

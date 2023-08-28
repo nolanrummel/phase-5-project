@@ -113,7 +113,7 @@ function RenderRides({rides, sliceNum, setSliceNum, renderTimeline, renderOwners
                                 {renderTimeline === 'past' ? (
                                     user !== null ? (
                                         ride.user.id === user.id ? (
-                                            <Rating rating={ride.rating} rideId={ride} detailRide={detailRide} setRideChanges={setRideChanges}/>
+                                            <Rating rating={ride.rating} rideId={ride} detailRide={detailRide}/>
                                         ) : (
                                             <Rating rating={ride.rating} rideId={ride} />
                                         )
