@@ -8,14 +8,23 @@
     cursor: pointer;
 }
 
+.rating-lockup {
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+    /* background-color: red; */
+}
+
 .filled-star {
     color: #56666f;
     font-size: 13pt;
+    padding-left: 2px;
 }
 
 .empty-star {
     color: #9eada5;
     font-size: 13pt;
+    padding-left: 2px;
 }
 
 .fractional-star {
@@ -24,4 +33,23 @@
     /* background: linear-gradient(to right, gold 50%, red 50%); */
     background-clip: text;
     /* -webkit-background-clip: text; */
+}
+
+.change-rating {
+    background-color: #9eada5;
+    border: none;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    color: #56666f;
+    font-family: 'Bebas Neue', sans-serif;
+    width: 100%;
+    transition: transform 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+.change-rating:hover {
+    transform: scale(1.1);
+    background-color: #2a344f;
 }
