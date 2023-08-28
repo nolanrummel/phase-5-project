@@ -1,20 +1,25 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { UserContext } from '../context/user'
 import "../styling/rating.css"
 
-function Rating({rating, rideId, detailRide, setRideChanges}) {
+function Rating({rating, rideId, detailRide }) {
     const { user } = useContext(UserContext)
 
-    const [starRating, setStarRating] = useState(0)
+    const [starRating, setStarRating] = useState(rating)
     const [newRating, setNewRating] = useState(0)
+    const [startingRating, setStartingRating] = useState(rating)
     const [editing, setEditing] = useState(false)
+
+    useEffect(() => {
+        setStartingRating(rating)
+    }, [])
 
     const handleStarClick = (selectedRating) => {
         setStarRating(selectedRating)
     }
 
-    const averageInteger = Math.floor(rating)
-    const averageDecimal = Math.round((rating % 1) * 100)
+    const averageInteger = Math.floor(starRating)
+    const averageDecimal = Math.round((starRating % 1) * 100)
 
     let arrayLength = 0
     if (averageDecimal != 0) {
@@ -30,7 +35,6 @@ function Rating({rating, rideId, detailRide, setRideChanges}) {
 
     const confirmRating = (e) => {
         e.stopPropagation()
-        // e.preventDefault()
 
         console.log(rideId)
         const formObj = {
@@ -44,13 +48,14 @@ function Rating({rating, rideId, detailRide, setRideChanges}) {
         if (r.ok) {
             r.json().then(data => {
                 console.log(data)
+                setNewRating(starRating)
+                setStartingRating(starRating)
             })
         } else {
             r.json().then(data => {
                 console.log(data)
             })
         }})
-        // setRideChanges(starRating)
     }
 
     return (

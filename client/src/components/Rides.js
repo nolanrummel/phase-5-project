@@ -1,9 +1,9 @@
 import React, { useContext, useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { UserContext } from '../context/user'
-import Rating from './Rating'
 import "../styling/rides.css"
 import RenderRides from './RenderRides'
+import RideCreator from './RideCreator'
 
 function Rides({currentTime}) {
     const { user } = useContext(UserContext)
@@ -14,6 +14,7 @@ function Rides({currentTime}) {
     const [userPtRides, setUserPtRides] = useState([])
 
     const [detailRide, setDetailRide] = useState('')
+    const [rideCreatorActive, setRideCreatorActive] = useState(false)
     // const [rideChanges, setRideChanges] = useState('')
 
     const [renderTimeline, setRenderTimeline] = useState('upcoming')
@@ -72,6 +73,11 @@ function Rides({currentTime}) {
         console.log('post request to join ride')
     }
 
+    const handleRideCreator = (e) => {
+        setRideCreatorActive(true)
+        console.log('create new ride')
+    }
+
     // const handleRenderMore = (e) => {
     //     setSliceNum(sliceNum + 24)
     // }
@@ -119,11 +125,19 @@ function Rides({currentTime}) {
     return (
         <div className='container'>
             {user ? 
-                ''
+                (rideCreatorActive ?
+                    <div className='creator-container'>
+                        <RideCreator setRideCreatorActive={setRideCreatorActive}/>
+                    </div>
+                    :
+                    <div className='login-button-container'>
+                        <button className='login-button' onClick={handleRideCreator}>Create a New Ride</button>
+                    </div>
+                )
                 :
                 <div className='login-button-container'>
                     <Link to='/home'>
-                        <button className='login-button'>Login to View Your Rides</button>
+                        <button className='login-button'>Login to Create and View Your Rides</button>
                     </Link>
                 </div>
             }

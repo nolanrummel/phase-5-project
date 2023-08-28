@@ -77,7 +77,7 @@ function EditUser({setEditUser}) {
                 <div className='edit-lockup'>
                     <input
                         className='edit-input-field'
-                        placeholder='Change Name...'
+                        // placeholder='Change Name...'
                         type='text'
                         id='name'
                         value={name}
@@ -91,7 +91,7 @@ function EditUser({setEditUser}) {
                 <div className='edit-lockup'>
                     <input
                         className='edit-input-field'
-                        placeholder='Change Username...'
+                        // placeholder='Change Username...'
                         type='text'
                         id='userName'
                         value={userName}
@@ -105,7 +105,7 @@ function EditUser({setEditUser}) {
                 <div className='edit-lockup'>
                     <input
                         className='edit-input-field'
-                        placeholder='Change Password...'
+                        // placeholder='Change Password...'
                         type='text'
                         id='password'
                         value={password}
