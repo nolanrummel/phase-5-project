@@ -1,7 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useContext } from 'react'
+import { UserContext } from '../context/user'
 import Rating from './Rating'
 
-function RenderRides({rides, sliceNum, setSliceNum}) {
+function RenderRides({rides, sliceNum, setSliceNum, renderTimeline, renderOwnership, setRideChanges}) {
+    const { user } = useContext(UserContext)
+    
     const [detailRide, setDetailRide] = useState('')
     const [mapHeight, setMapHeight] = useState('')
   
@@ -38,9 +41,7 @@ function RenderRides({rides, sliceNum, setSliceNum}) {
         };
     }, []);
 
-    const pastPublic = true
-
-    const renderPastPublic = rides.slice(0, sliceNum).map((ride) => {
+    const renderRides = rides.slice(0, sliceNum).map((ride) => {
         const month = ride.date.slice(5, 7)
         const day = ride.date.slice(8, 10)
         const hour = ride.date.slice(11, 13)
@@ -51,23 +52,40 @@ function RenderRides({rides, sliceNum, setSliceNum}) {
         //console.log(month + '/' + day + ' ' + hour + ':' + minutes + `${hour >= 12 ? 'PM' : 'AM'}`)
         
         return (
-            <div className={detailRide === ride.id ? 'detail-container' : ''} key={ride.id}>
-                <div className={detailRide === ride.id ? 'edit-ride-card' : 'ride-card'} key={ride.id} onClick={() => handleDetail(ride.id)}>
+            <div className={detailRide === ride.id ? 'detail-container' : ''} key={ride.id} onClick={() => handleDetail(ride.id)}>
+                {/* <div className={detailRide === ride.id ? 'edit-ride-card' : 'ride-card'} key={ride.id} onClick={() => handleDetail(ride.id)}> */}
+                <div className={detailRide === ride.id ? 'edit-ride-card' : 'ride-card'} key={ride.id}>
                     {detailRide === ride.id ?
                         <h1 className='edit-ride-card-title'>{ride.name}</h1>
                         :
-                        <h2 className='ride-card-title' style={{width: (mapHeight * 1.33) + 'px'}}>{ride.name}</h2>
+                        <h2 className='ride-card-title'>{ride.name}</h2>
                     }
-                    {detailRide === ride.id ?
-                        <h5 className='user-title'><span>Ridden By {ride.user.name}</span> \ User: {ride.user.user_name}</h5>
-                        :
-                        <h5 className='user-title'>User: {ride.user.user_name}</h5>
-                    }
+                    {detailRide === ride.id ? (
+                        user !== null ? (
+                            <h5 className='user-title' style={ride.user.id === user.id ? {color: '#708a7c'} : {color: '#9eada5'}}>
+                                <span>A Ride From {ride.user.name}</span> / User: {ride.user.user_name}
+                            </h5>
+                            ) : (
+                            <h5 className='user-title' style={{color: '#9eada5'}}>
+                                <span>A Ride From {ride.user.name}</span> / User: {ride.user.user_name}
+                            </h5>
+                        )
+                        ) : (
+                        user !== null ? (
+                            <h5 className='user-title' style={ride.user.id === user.id ? {color: '#708a7c'} : {color: '#9eada5'}}>
+                                User: {ride.user.user_name}
+                            </h5>
+                            ) : (
+                            <h5 className='user-title' style={{color: '#9eada5'}}>
+                                User: {ride.user.user_name}
+                            </h5>
+                        )
+                    )}
                     <div className='map-date-container'>
                         {detailRide === ride.id ?
-                            <div ref={divRef} className='map-preview' style={{height: '60vh'}}></div>
+                            <img className='map-image' src='/images/map-example.png' alt='map'/>
                             :
-                            <div ref={divRef} className='map-preview' style={{height: mapHeight + 'px'}}></div>
+                            <img className='map-image' src='/images/map-example.png' alt='map'/>
                         }
                         {detailRide === ride.id ?
                             <div className='edit-lockup'>
@@ -87,12 +105,34 @@ function RenderRides({rides, sliceNum, setSliceNum}) {
                                         <div className='edit-route'>
                                             <h3 className='edit-route-name' style={{color: '#9eada5'}}>Route</h3>
                                             <div className='route-divider'></div>
-                                            <h3 className='edit-route-name'>From [START POINT] to [END POINT]</h3>
+                                            <h3 className='edit-route-name'>From [START POINT ADDRESS] to [END POINT ADDRESS]</h3>
                                             {/* <h3 className='edit-route-name'>{ride.route.name}</h3> */}
                                         </div>
                                     </div>
                                 </div>
-                                <h5><Rating rating={ride.rating} pastPublic={pastPublic} detailRide={detailRide}/></h5>
+                                {renderTimeline === 'past' ? (
+                                    user !== null ? (
+                                        ride.user.id === user.id ? (
+                                            <Rating rating={ride.rating} rideId={ride} detailRide={detailRide} setRideChanges={setRideChanges}/>
+                                        ) : (
+                                            <Rating rating={ride.rating} rideId={ride} />
+                                        )
+                                    ) : (
+                                        <h5>
+                                            <Rating rating={ride.rating} rideId={ride} />
+                                        </h5>
+                                    )
+                                ) : (
+                                    user !== null ? (
+                                        ride.user.id === user.id ? (
+                                            <div>You're in!</div>
+                                        ) : (
+                                            <button>Sign Up For this Ride</button>
+                                        )
+                                    ) : (
+                                        <button>Login to Sign Up</button>
+                                    )
+                                )}
                             </div>
                             :
                             <div className='date'>
@@ -109,19 +149,35 @@ function RenderRides({rides, sliceNum, setSliceNum}) {
                             <div className='miles-lockup'>
                                 <h3 className='small-miles-integer'>{milesInteger}<span>.{milesDecimal} Miles</span></h3>
                             </div>
-                            <h5><Rating rating={ride.rating} pastPublic={pastPublic}/></h5>
+                            {renderTimeline === 'upcoming' ?
+                                ''
+                                :
+                                <h5><Rating rating={ride.rating} rideId={ride}/></h5>
+                            }
                         </div> 
                     }
-                    {/* <h3>{ride.date}</h3> */}
-                    {/* <h5>Route: {ride.route.name} | {ride.route.distance} Miles</h5> */}
-                    {/* <h3>{ride.user.user_name}</h3> */}
-                    {/* description? */}
-                    <div className='color-bar' style={{backgroundColor: '#2a344f'}}></div>
+                    <div className='color-bar-lockup'>
+                        {renderOwnership === 'user' ?
+                            <div className='color-bar-user' style={{backgroundColor: '#708a7c'}}></div>
+                            :
+                            <div className='color-bar-user' style={{backgroundColor: '#9eada5'}}></div>
+                        }
+                        {renderTimeline === 'past' ?
+                            <div className='color-bar-timeline' style={{backgroundColor: '#2a344f'}}></div>
+                            :
+                            <div className='color-bar-timeline' style={{backgroundColor: '#56666f'}}></div>
+                        }
+                    </div>
                 </div>
             </div>
         )
     })
-    return <div className='card-grid'>{renderPastPublic}</div>
+    return <div className='card-grid'>{renderRides}</div>
 }
 
 export default RenderRides
+
+{/* <h3>{ride.date}</h3> */}
+{/* <h5>Route: {ride.route.name} | {ride.route.distance} Miles</h5> */}
+{/* <h3>{ride.user.user_name}</h3> */}
+{/* description? */}

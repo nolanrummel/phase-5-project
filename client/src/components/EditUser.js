@@ -32,8 +32,11 @@ function EditUser({setEditUser}) {
             r.json().then(data => {
                 setUser(data)
             })
-        }
-        })
+        } else {
+            r.json().then(data => {
+                console.log(data)
+            })
+        }})
 
         setName('')
         setUserName('')

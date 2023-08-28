@@ -11,10 +11,10 @@ function Rides({currentTime}) {
     const [upcomingRides, setUpcomingRides] = useState([])
     const [pastRides, setPastRides] = useState([])
     const [userUpRides, setUserUpRides] = useState([])
-    const [publicPtRides, setPublicPtRides] = useState([])
+    const [userPtRides, setUserPtRides] = useState([])
 
     const [detailRide, setDetailRide] = useState('')
-    const [rating, setRating] = useState('')
+    // const [rideChanges, setRideChanges] = useState('')
 
     const [renderTimeline, setRenderTimeline] = useState('upcoming')
     const [renderOwnership, setRenderOwnership] = useState('public')
@@ -40,7 +40,7 @@ function Rides({currentTime}) {
           .catch(error => {
             console.error('Error Fetching Routes:', error)
           })
-    }, [])
+    }, []) //add rideChanges here???
 
     useEffect(() => {
         setPastRides(allRides.filter(ride => ride.date < currentTime))
@@ -53,7 +53,7 @@ function Rides({currentTime}) {
     useEffect(() => {
         if (user !== null) {
             setUserUpRides(upcomingRides.filter((ride => ride.user.id === user.id)))
-            setPublicPtRides(pastRides.filter((ride => ride.user.id === user.id)))
+            setUserPtRides(pastRides.filter((ride => ride.user.id === user.id)))
         }
     }, [renderOwnership])
 
@@ -72,15 +72,6 @@ function Rides({currentTime}) {
         console.log('post request to join ride')
     }
 
-    const handleDetail = (rideId) => {
-        setDetailRide(rideId)
-    }
-
-    // const handleDetail = (rideId) => {
-    //     setDetailRide(rideId)
-    //     setRating('')
-    // }
-
     // const handleRenderMore = (e) => {
     //     setSliceNum(sliceNum + 24)
     // }
@@ -93,96 +84,10 @@ function Rides({currentTime}) {
     //     }
     // }
 
-    const renderUpcomingPublic = upcomingRides.slice(0, sliceNum).map((ride) => {
-        return (
-            <div className='ride-card' key={ride.id}>
-                <h2 className='ride-card-title' style={{width: (mapHeight * 1.33) + 'px'}}>{ride.name}</h2>
-                <div ref={divRef} className='map-preview' style={{height: mapHeight + 'px'}}></div>
-                <h3>{ride.date}</h3>
-                <h5>Route: {ride.route.name} | {ride.route.distance} Miles</h5>
-                {user ? 
-                    <button onClick={handleJoin}>Join this Ride</button>
-                    :
-                    <Link to='/home'>
-                        <button>Sign in to Join this Ride</button>
-                    </Link>
-                }
-            </div>
-        )
-    })
-
-    const pastPublic = true
-
-    const renderPastPublic = pastRides.slice(0, sliceNum).map((ride) => {
-        const month = ride.date.slice(5, 7)
-        const day = ride.date.slice(8, 10)
-        const hour = ride.date.slice(11, 13)
-        const minutes = ride.date.slice(14, 16)
-        const milesInteger = Math.floor(ride.route.distance)
-        const milesDecimal = Math.round((ride.route.distance % 1) * 100)
-        
-        //console.log(month + '/' + day + ' ' + hour + ':' + minutes + `${hour >= 12 ? 'PM' : 'AM'}`)
-        
-        return (
-            <div>
-                {detailRide === ride.id ?
-                    <div></div>
-                    :
-                    <div className='ride-card' onClick={() => handleDetail(ride.id)} key={ride.id}>
-                        <h2 className='ride-card-title' style={{width: (mapHeight * 1.33) + 'px'}}>{ride.name}</h2>
-                        <div className='map-date-container'>
-                            <div ref={divRef} className='map-preview' style={{height: mapHeight + 'px'}}></div>
-                            <div className='date'>
-                                <h3 className='date-number'>{month}</h3>
-                                <div className='divider'></div>
-                                <h3 className='date-number'>{day}</h3>
-                            </div>
-                        </div>
-                        <div className='miles-rating-lockup'>
-                            <div className='miles-lockup'>
-                                <h3 className='miles-integer'>{milesInteger}</h3>
-                                <h5>.{milesDecimal} Miles</h5>
-                            </div>
-                            <h5><Rating rating={ride.rating} pastPublic={pastPublic}/></h5>
-                        </div>
-                        {/* <h3>{ride.date}</h3> */}
-                        {/* <h5>Route: {ride.route.name} | {ride.route.distance} Miles</h5> */}
-                        {/* <h3>{ride.user.user_name}</h3> */}
-                        {/* description? */}
-                        <div className='color-bar' style={{backgroundColor: '#2a344f'}}></div>
-                    </div>
-                }
-            </div>
-        )
-    })
-
-    const renderUpcomingUser = userUpRides.slice(0, sliceNum).map((ride) => {
-        return (
-            <div className='ride-card' key={ride.id}>
-                <h2 className='ride-card-title' style={{width: (mapHeight * 1.33) + 'px'}}>{ride.name}</h2>
-                <div ref={divRef} className='map-preview' style={{height: mapHeight + 'px'}}></div>
-                <h3>{ride.date}</h3>
-                <h5>Route: {ride.route.name} | {ride.route.distance} Miles</h5>
-                <h5>{ride.user.name}</h5>
-            </div>
-        )
-    })
-
-    const renderPastUser = publicPtRides.slice(0, sliceNum).map((ride) => {
-        return (
-            <div className='ride-card' key={ride.id}>
-                <h2 className='ride-card-title' style={{width: (mapHeight * 1.33) + 'px'}}>{ride.name}</h2>
-                <div ref={divRef} className='map-preview' style={{height: mapHeight + 'px'}}></div>
-                <h3>{ride.date}</h3>
-                <h5>Route: {ride.route.name} | {ride.route.distance} Miles</h5>
-                <h5>Your Rating: <Rating rating={ride.rating} rideId={ride.id}/></h5>
-            </div>
-        )
-    })
-
     const handleUpcoming = (e) => {
         setPastView(false)
         setRenderTimeline('upcoming')
+        setSliceNum(24)
         setSliceTotal(upcomingRides.length)
         setDetailRide('')
     }
@@ -190,6 +95,7 @@ function Rides({currentTime}) {
     const handlePast = (e) => {
         setPastView(true)
         setRenderTimeline('past')
+        setSliceNum(24)
         setSliceTotal(pastRides.length)
         setDetailRide('')
     }
@@ -197,6 +103,7 @@ function Rides({currentTime}) {
     const handleUser = (e) => {
         setUserView(false)
         setRenderOwnership('user')
+        setSliceNum(24)
         setSliceTotal(userUpRides.length)
         setDetailRide('')
     }
@@ -204,7 +111,8 @@ function Rides({currentTime}) {
     const handlePublic = (e) => {
         setUserView(true)
         setRenderOwnership('public')
-        setSliceTotal(publicPtRides.length)
+        setSliceNum(24)
+        setSliceTotal(userPtRides.length)
         setDetailRide('')
     }
 
@@ -251,20 +159,21 @@ function Rides({currentTime}) {
             </div>
             <div className='card-container'>
                 {renderTimeline === 'upcoming' && renderOwnership === 'public' ? 
-                    <div className='card-grid'>
-                        {renderUpcomingPublic}
+                    <div>
+                        <RenderRides rides={upcomingRides} sliceNum={sliceNum} setSliceNum={setSliceNum} renderTimeline={renderTimeline} renderOwnership={renderOwnership}/>
                     </div>
                     : renderTimeline === 'past' && renderOwnership === 'public' ?
                     <div>
-                        <RenderRides rides={pastRides} sliceNum={sliceNum} setSliceNum={setSliceNum}/>
+                        <RenderRides rides={pastRides} sliceNum={sliceNum} setSliceNum={setSliceNum} renderTimeline={renderTimeline} renderOwnership={renderOwnership}/>
                     </div>
                     :  renderTimeline === 'upcoming' && renderOwnership === 'user' ?
-                    <div className='card-grid'> 
-                        {renderUpcomingUser}
+                    <div> 
+                        <RenderRides rides={userUpRides} sliceNum={sliceNum} setSliceNum={setSliceNum} renderTimeline={renderTimeline} renderOwnership={renderOwnership}/>
                     </div>
                     : renderTimeline === 'past' && renderOwnership === 'user' ?
-                    <div className='card-grid'>
-                        {renderPastUser}
+                    <div>
+                        <RenderRides rides={userPtRides} sliceNum={sliceNum} setSliceNum={setSliceNum} renderTimeline={renderTimeline} renderOwnership={renderOwnership}/>
+                        {/* <RenderRides rides={userPtRides} sliceNum={sliceNum} setSliceNum={setSliceNum} renderTimeline={renderTimeline} renderOwnership={renderOwnership} setRideChanges={setRideChanges}/> */}
                     </div>
                     :
                     <div></div>

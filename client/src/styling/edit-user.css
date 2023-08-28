@@ -5,6 +5,7 @@
     display: flex;
     flex-direction: column;
     position: relative;
+    align-items: center;
 }
 
 .x-to-exit {
@@ -45,11 +46,13 @@
     display: flex;
     flex-direction: column;
     text-align: left;
+    /* background-color: chocolate; */
+    width: 60%;
 }
 
 .edit-name {
     color: #9eada5;
-    padding-left: 20%;
+    /* padding-left: 20%; */
 }
 
 .edit-lockup {
