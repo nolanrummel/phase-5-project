@@ -47,14 +47,13 @@ class Route(db.Model, SerializerMixin):
     distance = db.Column(db.Integer)
     origin = db.Column(db.String)
     destination = db.Column(db.String)
-    created_by = db.Column(db.Integer, db.ForeignKey('users.id'))
+    created_by = db.Column(db.Integer)
     #waypoints = db.Column(db.PickleType)
     #elevation = db.Column(db.Integer)
 
     #RELATIONSHIPS
     rides = db.relationship('Ride', back_populates = 'route')
     users = association_proxy('rides', 'route')
-    
 
     serialize_rules = ('-rides.route',)
 
