@@ -25,7 +25,10 @@ function Home() {
         setLoginSignup(!loginSignup)
     }
 
-    const handleLogOut = (e) => {
+    const handleLogOut = (e) => {   
+        fetch("/logout", {
+            method: "DELETE",
+        })
         setUser(null)
     }
     
@@ -62,7 +65,7 @@ function Home() {
     }
 
     return (
-        <div>
+        <div className='home-container'>
             {user ? 
                 <div className='user-page'>
                     <div className='user-info'>

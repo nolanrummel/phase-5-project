@@ -48,6 +48,11 @@ function RenderRides({rides, sliceNum, setSliceNum, renderTimeline, renderOwners
         const minutes = ride.date.slice(14, 16)
         const milesInteger = Math.floor(ride.route.distance)
         const milesDecimal = Math.round((ride.route.distance % 1) * 100)
+
+        const splitOrg = ride.route.origin.split(' | ')
+        const noNumberOrg = splitOrg[0].replace(/^\d+\s*/, '')
+        const splitDest = ride.route.destination.split(' | ')
+        const noNumberDest = splitDest[0].replace(/^\d+\s*/, '')
         
         //console.log(month + '/' + day + ' ' + hour + ':' + minutes + `${hour >= 12 ? 'PM' : 'AM'}`)
         
@@ -104,7 +109,7 @@ function RenderRides({rides, sliceNum, setSliceNum, renderTimeline, renderOwners
                                         <div className='edit-route'>
                                             <h3 className='edit-route-name' style={{color: '#9eada5'}}>Route</h3>
                                             <div className='route-divider'></div>
-                                            <h3 className='edit-route-name'>From [START POINT ADDRESS] to [END POINT ADDRESS]</h3>
+                                            <h3 className='edit-route-name'>From {noNumberOrg} to {noNumberDest}</h3>
                                             {/* <h3 className='edit-route-name'>{ride.route.name}</h3> */}
                                         </div>
                                     </div>

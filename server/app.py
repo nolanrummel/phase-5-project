@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 # Standard library imports
+import ipdb
 
 # Remote library imports
 from flask import request, make_response, session
@@ -129,6 +130,18 @@ class Routes(Resource):
     def get(self):
         routes = [route.to_dict(rules=('-rides.user._password_hash',)) for route in Route.query.all()]
         return make_response(routes, 200)
+    
+    def post(self):
+        data = request.get_json()
+        # ipdb.set_trace()
+        try:
+            # new_route = Route(name = data['name'], distance = ['distance'], origin = data['origin'], destination = data['destination'], waypoints = data['waypoints'])
+            new_route = Route(name = data['name'], distance = ['distance'], origin = data['origin'], destination = data['destination'])
+        except Exception as e:
+            return make_response({'error': str(e)}, 404)
+        db.session.add(new_route)
+        db.session.commit()
+        return make_response(new_route.to_dict(), 201)
     
 api.add_resource(Routes, '/routes')
 
