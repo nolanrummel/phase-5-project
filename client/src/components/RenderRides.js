@@ -2,13 +2,13 @@ import React, { useState, useEffect, useRef, useContext } from 'react'
 import { UserContext } from '../context/user'
 import Rating from './Rating'
 
-function RenderRides({rides, sliceNum, setSliceNum, renderTimeline, renderOwnership, setRideChanges}) {
+function RenderRides({rides, sliceNum, setSliceNum, renderTimeline, renderOwnership}) {
     const { user } = useContext(UserContext)
     
     const [detailRide, setDetailRide] = useState('')
-    const [mapHeight, setMapHeight] = useState('')
+    // const [mapHeight, setMapHeight] = useState('')
   
-    const divRef = useRef(null)
+    // const divRef = useRef(null)
 
     const handleDetail = (rideId) => {
         if (detailRide === ''){
@@ -22,24 +22,24 @@ function RenderRides({rides, sliceNum, setSliceNum, renderTimeline, renderOwners
         }
     }
 
-    const handleResize = () => {
-        window.requestAnimationFrame(() => {
-            const div = divRef.current;
-            if (div) {
-                const rect = div.getBoundingClientRect();
-                setMapHeight(rect.width * 0.75);
-            }
-        });
-    };
+    // const handleResize = () => {
+    //     window.requestAnimationFrame(() => {
+    //         const div = divRef.current
+    //         if (div) {
+    //             const rect = div.getBoundingClientRect()
+    //             setMapHeight(rect.width * 0.75)
+    //         }
+    //     })
+    // }
     
-    useEffect(() => {
-        handleResize();
-        window.addEventListener('resize', handleResize);
+    // useEffect(() => {
+    //     handleResize();
+    //     window.addEventListener('resize', handleResize)
 
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
-    }, []);
+    //     return () => {
+    //         window.removeEventListener('resize', handleResize)
+    //     };
+    // }, [])
 
     const renderRides = rides.slice(0, sliceNum).map((ride) => {
         const month = ride.date.slice(5, 7)
@@ -53,7 +53,6 @@ function RenderRides({rides, sliceNum, setSliceNum, renderTimeline, renderOwners
         
         return (
             <div className={detailRide === ride.id ? 'detail-container' : ''} key={ride.id} onClick={() => handleDetail(ride.id)}>
-                {/* <div className={detailRide === ride.id ? 'edit-ride-card' : 'ride-card'} key={ride.id} onClick={() => handleDetail(ride.id)}> */}
                 <div className={detailRide === ride.id ? 'edit-ride-card' : 'ride-card'} key={ride.id}>
                     {detailRide === ride.id ?
                         <h1 className='edit-ride-card-title'>{ride.name}</h1>
@@ -127,7 +126,7 @@ function RenderRides({rides, sliceNum, setSliceNum, renderTimeline, renderOwners
                                         ride.user.id === user.id ? (
                                             <div>You're in!</div>
                                         ) : (
-                                            <button>Sign Up For this Ride</button>
+                                            <button>Create a Ride With This Route</button>
                                         )
                                     ) : (
                                         <button>Login to Sign Up</button>

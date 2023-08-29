@@ -121,7 +121,7 @@ function Rides({currentTime}) {
             {user ? 
                 (rideCreatorActive ?
                     <div className='creator-container'>
-                        <RideCreator setRideCreatorActive={setRideCreatorActive}/>
+                        <RideCreator setRideCreatorActive={setRideCreatorActive} currentTime={currentTime}/>
                     </div>
                     :
                     <div className='login-button-container'>

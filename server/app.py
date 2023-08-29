@@ -146,19 +146,6 @@ class RideById(Resource):
             return make_response({'error':'Ride does not exist'}, 404)
         return make_response(ride.to_dict(rules=('-user._password_hash',)), 200)
     
-    # def patch(self, id):
-    #     try:
-    #         ride = Ride.query.filter_by(id = id).first()
-    #         data = request.get_json()
-    #         for attr in data:
-    #             setattr(ride, attr, data[attr])
-    #         db.session.commit()
-    #         return make_response(ride.to_dict(), 202)
-    #     except AttributeError:
-    #         return make_response({"error": "User does not Exist!"}, 404)
-    #     except ValueError:
-    #         return make_response({"errors": ["validation errors"]}, 400)
-    
     def patch(self, id):
         ride = Ride.query.filter_by(id=id).first()
         data = request.get_json()
