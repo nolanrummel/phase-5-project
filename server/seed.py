@@ -42,7 +42,9 @@ def create_rides():
     for _ in range(500):
         rating = None
         ride_date = fake.date_time_between(start_date='-9w', end_date='+1w')
+        formatted_ride_date = ride_date.strftime('%Y-%m-%d %H:%M:%S')
         current_date = datetime.datetime.now()
+        # formatted_current_date = current_date.toUTCString()
         if (current_date > ride_date):
             rating = randint(1, 5)
         else:
@@ -52,7 +54,8 @@ def create_rides():
             user_id=randint(1, 10),
             route_id=randint(1, 20),
             rating=rating,
-            date=ride_date
+            # date=formatted_ride_date,
+            date=ride_date,
         )
         rides.append(r)
     return rides

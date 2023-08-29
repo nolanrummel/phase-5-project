@@ -40,7 +40,7 @@ function Rating({rating, rideId, detailRide }) {
         const formObj = {
             'rating': starRating
         }
-        fetch(`http://127.0.0.1:5555/rides/${rideId.id}`, {
+        fetch(`/rides/${rideId.id}`, {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(formObj),
