@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { UserContext } from '../context/user'
 import "../styling/rating.css"
 
-function Rating({rating, rideId, detailRide }) {
+function Rating({rating, rideId, detailRide, altColor }) {
     const { user } = useContext(UserContext)
 
     const [starRating, setStarRating] = useState(rating)
@@ -90,7 +90,8 @@ function Rating({rating, rideId, detailRide }) {
                                     </span>
                                 ))}
                                 {averageDecimal == 0 ? '':
-                                    <span className='fractional-star' style={{background: `linear-gradient(to right, gold ${averageDecimal}%, red ${averageDecimal}%)`, '-webkit-background-clip': 'text'}}>
+                                    <span className='fractional-star' style={{background: `linear-gradient(to right, gold ${averageDecimal}%, red ${averageDecimal}%)`, 'WebkitBackgroundClip': 'text'}}>  
+                                    {/* '-webkit-background-clip': 'text' */}
                                         ★
                                     </span>
                                 }
@@ -105,24 +106,49 @@ function Rating({rating, rideId, detailRide }) {
                     }
                 </div>
                 :
-                <div className='rating-lockup'>
-                    <div>
-                        {Array.from({length: averageInteger}, (_, index) => (
-                            <span key={index} className='filled-star'>
-                                ★
-                            </span>
-                        ))}
-                        {averageDecimal == 0 ? '':
-                            <span className='fractional-star' style={{background: `linear-gradient(to right, gold ${averageDecimal}%, red ${averageDecimal}%)`, '-webkit-background-clip': 'text'}}>
-                                ★
-                            </span>
-                        }
-                        {Array.from({length: arrayLength}, (_, index) => (
-                            <span key={index} className='empty-star'>
-                                ★
-                            </span>
-                        ))}
-                    </div>
+                <div>
+
+                    {altColor ? 
+                        <div className='rating-lockup'>
+                            <div>
+                                {Array.from({length: averageInteger}, (_, index) => (
+                                    <span key={index} className='alt-filled-star'>
+                                        ★
+                                    </span>
+                                ))}
+                                {averageDecimal == 0 ? '':
+                                    <span className='alt-fractional-star' style={{background: `linear-gradient(to right, #2a344f ${averageDecimal}%, #56666f ${averageDecimal}%)`, 'WebkitBackgroundClip': 'text'}}>
+                                        ★
+                                    </span>
+                                }
+                                {Array.from({length: arrayLength}, (_, index) => (
+                                    <span key={index} className='alt-empty-star'>
+                                        ★
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
+                        :
+                        <div className='rating-lockup'>
+                            <div>
+                                {Array.from({length: averageInteger}, (_, index) => (
+                                    <span key={index} className='filled-star'>
+                                        ★
+                                    </span>
+                                ))}
+                                {averageDecimal == 0 ? '':
+                                    <span className='fractional-star' style={{background: `linear-gradient(to right, gold ${averageDecimal}%, red ${averageDecimal}%)`, 'WebkitBackgroundClip': 'text'}}>
+                                        ★
+                                    </span>
+                                }
+                                {Array.from({length: arrayLength}, (_, index) => (
+                                    <span key={index} className='empty-star'>
+                                        ★
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
+                    }
                 </div>
             }
             {/* {user !== null ? 

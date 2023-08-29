@@ -30,6 +30,28 @@
 .fractional-star {
     display: inline-block;
     -webkit-text-fill-color: transparent;
+    font-size: 13pt;
+    /* background: linear-gradient(to right, gold 50%, red 50%); */
+    background-clip: text;
+    /* -webkit-background-clip: text; */
+}
+
+.alt-filled-star {
+    color: #2a344f;
+    font-size: 10pt;
+    padding-left: 2px;
+}
+
+.alt-empty-star {
+    color: #56666f;
+    font-size: 10pt;
+    padding-left: 2px;
+}
+
+.alt-fractional-star {
+    display: inline-block;
+    -webkit-text-fill-color: transparent;
+    font-size: 10pt;
     /* background: linear-gradient(to right, gold 50%, red 50%); */
     background-clip: text;
     /* -webkit-background-clip: text; */
