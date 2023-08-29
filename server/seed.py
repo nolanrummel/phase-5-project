@@ -2,6 +2,7 @@
 
 # Standard library imports
 from random import random, randint, choice as rc
+import re
 
 # Remote library imports
 from faker import Faker
@@ -30,9 +31,21 @@ def create_routes():
         import random
         random_float = random.uniform(5, 50)
         random_miles = round(random_float, 2)
+
+        origin_full_address = fake.address()
+        origin_lines = origin_full_address.split('\n')
+        origin_first_line = re.sub(r'(Apt\.?|Suite|Ste)\s*\d+.*$', '', origin_lines[0]).strip()
+
+        dest_full_address = fake.address()
+        dest_lines = dest_full_address.split('\n')
+        dest_first_line = re.sub(r'(Apt\.?|Suite|Ste)\s*\d+.*$', '', dest_lines[0]).strip()
+
         r = Route(
             name=fake.color(),
-            distance=random_miles
+            distance=random_miles,
+            origin=(origin_first_line + " | " + origin_lines[1]),
+            destination=(dest_first_line + " | " + dest_lines[1]),
+            created_by=randint(1, 10)
         )
         routes.append(r)
     return routes

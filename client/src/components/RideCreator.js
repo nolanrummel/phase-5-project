@@ -10,12 +10,17 @@ function RideCreator({setRideCreatorActive, currentTime}) {
     const [name, setName] = useState('')
     const [rideDate, setRideDate] = useState('')
     const [rideTime, setRideTime] = useState('')
+    const [routeName, setRouteName] = useState('')
     const [startPoint, setStartPoint] = useState('')
     const [endPoint, setEndPoint] = useState('')
     const [extraPoints, setExtraPoints] = useState([])
     const [extraPointsCount, setExtraPointsCount] = useState(0)
     const [customizeRoute, setCustomizeRoute] = useState(true)
     const [routes, setRoutes] = useState([])
+    const [milesInteger, setMilesInteger] = useState(0)
+    const [milesDecimal, setMilesDecimal] = useState(0)
+    const [detAverageRating, setDetAverageRating] = useState(0)
+
     const [firstSliceNum, setFirstSliceNum] = useState(0)
     const [secondSliceNum, setSecondSliceNum] = useState(9)
     const [detailRoute, setDetailRoute] = useState('')
@@ -25,9 +30,6 @@ function RideCreator({setRideCreatorActive, currentTime}) {
 
     const formattedDate = `${rideDate} ${rideTime}:00.000000`
     // console.log(formattedDate)
-
-    // console.log([startPoint, extraPoints, endPoint])
-    // console.log(extraPoints)
 
     const handleResize = () => {
         window.requestAnimationFrame(() => {
@@ -48,13 +50,17 @@ function RideCreator({setRideCreatorActive, currentTime}) {
         };
     }, [customizeRoute])
 
-    const handleDetail = (routeId) => {
+    const handleDetail = (routeId, averageRating) => {
         if (detailRoute === ''){
             setDetailRoute(routeId)
+            setDetAverageRating(averageRating)
+            // handleDetailStats(routeId)
         } if (detailRoute === routeId) {
             setDetailRoute('')
         } else {
             setDetailRoute(routeId)
+            setDetAverageRating(averageRating)
+            // handleDetailStats(routeId)
         }
     }
 
@@ -68,6 +74,18 @@ function RideCreator({setRideCreatorActive, currentTime}) {
             console.error('Error Fetching Routes:', error)
           })
     }, [])
+
+    useEffect(() => {
+        const updateStatistics = async () => {
+            if (detailRoute !== '') {
+                const integer = Math.floor(routes[detailRoute].distance)
+                const decimal = Math.round((routes[detailRoute].distance % 1) * 100)
+                setMilesInteger(integer)
+                setMilesDecimal(decimal)
+            }
+        }
+        updateStatistics()
+    }, [detailRoute])
     
     const renderRoutes = routes.slice(firstSliceNum, secondSliceNum).map((route) => {
         const rides = route.rides
@@ -84,10 +102,11 @@ function RideCreator({setRideCreatorActive, currentTime}) {
                 userCount[userId] = 1
             }
         })
+
         const averageRating = (totalRating/completedRides.length).toFixed(2)
 
         return (
-            <div key={route.id} className='route-card' onClick={() => handleDetail(route.id)}>
+            <div key={route.id} className='route-card' onClick={() => handleDetail((route.id - 1), averageRating)}>
                 <h3 className='small-route-title'>{route.name}</h3>
                 <img className='small-map-image' src='/images/map-example.png' alt='map'/>
                 <h5 className='small-rating'>
@@ -97,13 +116,13 @@ function RideCreator({setRideCreatorActive, currentTime}) {
 
                 {/* <div className='small-directions-lockup'>
                     <div className='small-directions-container'>
-                        <h5 className='small-direction'>[START POINT ADDRESS]</h5>
+                        <h5 className='small-direction'>{noNumberOrg}</h5>
                     </div>
                     <div className='small-directions-divider-container'>
                         <div className='small-directions-divider'></div>
                     </div>
                     <div className='small-directions-container'>
-                        <h5 className='small-direction'>[END POINT ADDRESS]</h5>
+                        <h5 className='small-direction'>{noNumberDest}</h5>
                     </div>
                 </div> */}
             </div>
@@ -134,39 +153,87 @@ function RideCreator({setRideCreatorActive, currentTime}) {
         setExtraPointsCount(extraPointsCount + 1)
     }
 
-    const removeRoutes = (index) => {
-        setExtraPointsCount(extraPointsCount - 1);
-        console.log(index);
+    const removeRoutes = (indexToRemove) => {
+        setExtraPointsCount(extraPointsCount - 1)
+        setExtraPoints((prevPoints) => {
+          const updatedPoints = [...prevPoints]
+          updatedPoints.splice(indexToRemove, 1)
+          return updatedPoints;
+        })
     }
     
     const handleNewPoints = (index, value) => {
-        setExtraPoints(value);
-        console.log(index);
-        console.log(extraPoints);
+        setExtraPoints((prevPoints) => {
+            const updatedPoints = [...prevPoints]
+            updatedPoints[index] = value
+            return updatedPoints
+        })
     }
 
-    // const post = () => {
-    //     formattedDate = user.rides.filter(ride => ride.date < `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2,'0')}-${String(new Date().getDate()).padStart(2,'0')} ${String(new Date().getHours()).padStart(2,'0')}:${String(new Date().getMinutes()).padStart(2,'0')}:${String(new Date().getSeconds()).padStart(2,'0')}`)
-    //     new Date().toUTCString()
-    // }
-
-    const additionalEndPoints = Array.from({length: extraPointsCount}, (_, index) => (
+    const additionalEndPoints = Array.from({ length: extraPointsCount }, (_, index) => (
         <form className='create-form' key={index}>
-            <h4 className='create-header'>Stop {index + 2}</h4>
-            <div className='create-lockup'>
-                <div className='add-stops-button' onClick={() => removeRoutes(index)}>
-                    <h3 className='plus-symbol'>-</h3>
-                </div>
-                <input
-                    className='create-input-field'
-                    type='text'
-                    id={index}
-                    value={extraPoints}
-                    onChange={(e) => handleNewPoints(index, e.target.value)}
-                />
+          <h4 className='create-header'>Stop {index + 2}</h4>
+          <div className='create-lockup'>
+            <div className='add-stops-button' onClick={() => removeRoutes(index)}>
+              <h3 className='plus-symbol'>-</h3>
             </div>
+            <input
+              className='create-input-field'
+              id='waypoint-'index
+              type='text'
+              value={extraPoints[index] || ''}
+              onChange={(e) => handleNewPoints(index, e.target.value)}
+            />
+          </div>
         </form>
     ))
+
+    const handleRouteCreate = (e) => {
+        e.preventDefault()
+        const formObj = {
+            'name': routeName,
+            'origin': startPoint,
+            'destination': endPoint,
+            'waypoints': formatDirections,
+            // 'distance': rideDistance
+        }
+
+        fetch('/routes', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formObj)
+        })
+            .then(r => {
+                if (r.ok) {
+                    console.log(r.ok)
+                    r.json()
+                        .then(data => {
+                            console.log(data)
+                            window.confirm('Route Created')
+                        })
+                }
+                else {
+                    console.log('no good')
+                    r.text()
+                        .then(data => {
+                            console.log(data)
+                            window.confirm('Route Not Created, Try Again')
+                        })
+                }
+            })
+    }
+
+    let formatDirections = []
+    
+    useEffect(() => {
+        extraPoints.map((waypoint) => {
+            const waypoints = {
+                location: waypoint,
+                stopover: true,
+            }
+            formatDirections.push(waypoints)
+        })
+    },[extraPoints, handleRouteCreate])
 
     return (
         <div className='ride-creator-container'>
@@ -220,13 +287,26 @@ function RideCreator({setRideCreatorActive, currentTime}) {
                 {customizeRoute ?
                     <div>
                         <form className='create-form'>
-                            <h4 className='create-header'>Starting Address</h4>
+                            <h4 className='create-header'>Route Name</h4>
                             <div className='create-lockup'>
                                 <input
                                     className='create-input-field'
                                     // placeholder='Ride Start...'
                                     type='text'
                                     id='name'
+                                    value={routeName}
+                                    onChange={(e) => setRouteName(e.target.value)}
+                                />
+                            </div>
+                        </form>
+                        <form className='create-form'>
+                            <h4 className='create-header'>Starting Address</h4>
+                            <div className='create-lockup'>
+                                <input
+                                    className='create-input-field'
+                                    // placeholder='Ride Start...'
+                                    type='text'
+                                    id='origin'
                                     value={startPoint}
                                     onChange={(e) => setStartPoint(e.target.value)}
                                 />
@@ -243,14 +323,14 @@ function RideCreator({setRideCreatorActive, currentTime}) {
                                     className='create-input-field'
                                     // placeholder='Ride End...'
                                     type='text'
-                                    id='name'
+                                    id='destination'
                                     value={endPoint}
                                     onChange={(e) => setEndPoint(e.target.value)}
                                 />
                             </div>
                         </form>
                         <div>
-                            <p className='existing-ride' onClick={() => setCustomizeRoute(false)}>Choose From an <span>Existing Route ></span></p>
+                            <p className='existing-ride' onClick={() => setCustomizeRoute(false)}>Choose From an <span>Existing Route {'>'}</span></p>
                         </div>
                     </div>
                     :
@@ -258,7 +338,23 @@ function RideCreator({setRideCreatorActive, currentTime}) {
                         <div className='rides-routes-container'>
                             {detailRoute ?
                                 <div className='create-detail-container' style={{height: gridHeight}} onClick={() => handleDetail('')}>
-                                    edit
+                                    <h2 style={{color: '#2a344f'}}>{routes[detailRoute].name}</h2>
+                                    <h4>Created By: [USERNAME]</h4>
+                                    <img className='small-map-image' src='/images/map-example.png' alt='map'/>
+                                    <Rating rating={detAverageRating} altColor={true}/>
+                                    <div className='edit-miles-lockup'>
+                                        <h3 className='edit-miles-integer'>{milesInteger}<span>.{milesDecimal} Miles</span></h3>
+                                    </div>
+                                    
+                                    <div className='edit-miles-rating-lockup'>
+                                        <div className='edit-route-lockup'>
+                                            <div className='edit-route'>
+                                                <div className='route-divider'></div>
+                                                {/* <h3 className='edit-route-name'>From {noNumberOrg} to {noNumberDest}</h3> */}
+                                                {/* <h3 className='edit-route-name'>{ride.route.name}</h3> */}
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 :
                                 <div className='routes-grid' ref={divRef} style={{height: gridHeight}}>                                    
@@ -266,20 +362,20 @@ function RideCreator({setRideCreatorActive, currentTime}) {
                                 </div>
                             }
                             <div className='arrow-container'>
-                                <h1 className='left-arrow' className={firstSliceNum <= 0 ? 'left-arrow-inactive' : 'left-arrow'} onClick={() => handleSlice('left')}>〈</h1>
+                                <h1 className={firstSliceNum <= 0 ? 'left-arrow-inactive' : 'left-arrow'} onClick={() => handleSlice('left')}>〈</h1>
                                 <h5 className='page-number'>{secondSliceNum / 9}/{Math.ceil(routes.length / 9)}</h5>
-                                <h1 className='right-arrow' className={secondSliceNum >= routes.length ? 'right-arrow-inactive' : 'right-arrow'} onClick={() => handleSlice('right')}>〈</h1>
+                                <h1 className={secondSliceNum >= routes.length ? 'right-arrow-inactive' : 'right-arrow'} onClick={() => handleSlice('right')}>〈</h1>
                             </div>
                         </div>
                         <div>
-                            <p className='existing-ride' onClick={() => setCustomizeRoute(true)}>Create a <span>New Route ></span></p>
+                            <p className='existing-ride' onClick={() => setCustomizeRoute(true)}>Create a <span>New Route {'>'}</span></p>
                         </div>
                     </div>
                 }
             </div>
             <div className='create-button-container'>
                 <div className='create-new-container'>
-                    <button className='create-new-button'>Create Ride</button>
+                    <button className='create-new-button' onClick={handleRouteCreate}>Create Ride</button>
                 </div>
                 <div className='cancel-container'>
                     <button className='cancel-button' onClick={handleRideCreatorActive}>Cancel</button>

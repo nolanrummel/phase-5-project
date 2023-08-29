@@ -34,6 +34,7 @@ function Signup() {
             .then(data => {
               history.push('/home')
               setUser(data)
+              window.confirm('Account Created')
             })
         }
         else {
