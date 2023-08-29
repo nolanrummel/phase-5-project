@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useContext } from "react"
 import Title from "./Title"
 import Home from "./Home"
 import Places from "./Places"
@@ -7,13 +7,21 @@ import Rides from "./Rides"
 import Navbar from "./Navbar"
 import NotFound from "./NotFound"
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
-import { UserProvider } from "../context/user"
+import { UserContext } from "../context/user"
 
 function App() {
   //here for useContext
-  const [user, setUser] = useState(null)
+  const { setUser } = useContext(UserContext)
 
   const [currentTime, setCurrentTime] = useState('')
+  useEffect(() => {
+    fetch('/check_session')
+    .then(r => {
+      if (r.ok) {
+        r.json().then(userObj => setUser(userObj))
+      }
+    })
+  }, [setUser])
 
   useEffect(() => {
     setCurrentTime(`${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2,'0')}-${String(new Date().getDate()).padStart(2,'0')} ${String(new Date().getHours()).padStart(2,'0')}:${String(new Date().getMinutes()).padStart(2,'0')}:${String(new Date().getSeconds()).padStart(2,'0')}`)
@@ -21,7 +29,7 @@ function App() {
 
   return (
     <Router>
-      <UserProvider>
+      {/* <UserProvider> */}
         <div className="title-nav-container">
           <Title />
           <Navbar />
@@ -48,7 +56,7 @@ function App() {
             </Route>
           </Switch>
         </div>
-      </UserProvider>
+      {/* </UserProvider> */}
     </Router>
   )
 }

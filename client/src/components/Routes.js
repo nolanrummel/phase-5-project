@@ -8,7 +8,7 @@ function Routes({currentTime}) {
     const [routeList, setRouteList] = useState([])
 
     useEffect(() => {
-        fetch('http://127.0.0.1:5555/routes')
+        fetch('/routes')
           .then(response => response.json())
           .then(data => {
             setRouteList(data)

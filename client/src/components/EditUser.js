@@ -23,7 +23,7 @@ function EditUser({setEditUser}) {
         setEditUser(false)
         console.log(formObj)
 
-        fetch(`http://127.0.0.1:5555/users/${user.id}`, {
+        fetch(`/users/${user.id}`, {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(formObj),
@@ -50,7 +50,7 @@ function EditUser({setEditUser}) {
     }
 
     const deleteUser = (userId) => {
-        fetch(`http://127.0.0.1:5555/users/${userId}`, { 
+        fetch(`/users/${userId}`, { 
             method: "DELETE" 
         })
           .then(() => {

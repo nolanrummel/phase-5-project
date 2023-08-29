@@ -13,7 +13,6 @@ function Rides({currentTime}) {
     const [userUpRides, setUserUpRides] = useState([])
     const [userPtRides, setUserPtRides] = useState([])
 
-    const [detailRide, setDetailRide] = useState('')
     const [rideCreatorActive, setRideCreatorActive] = useState(false)
     // const [rideChanges, setRideChanges] = useState('')
 
@@ -33,7 +32,7 @@ function Rides({currentTime}) {
     },[user])
 
     useEffect(() => {
-        fetch('http://127.0.0.1:5555/rides')
+        fetch('/rides')
           .then(response => response.json())
           .then(data => {
             setAllRides(data.sort((a, b) => b.date.localeCompare(a.date)))
@@ -75,7 +74,6 @@ function Rides({currentTime}) {
 
     const handleRideCreator = (e) => {
         setRideCreatorActive(true)
-        console.log('create new ride')
     }
 
     // const handleRenderMore = (e) => {
@@ -95,7 +93,6 @@ function Rides({currentTime}) {
         setRenderTimeline('upcoming')
         setSliceNum(24)
         setSliceTotal(upcomingRides.length)
-        setDetailRide('')
     }
 
     const handlePast = (e) => {
@@ -103,7 +100,6 @@ function Rides({currentTime}) {
         setRenderTimeline('past')
         setSliceNum(24)
         setSliceTotal(pastRides.length)
-        setDetailRide('')
     }
 
     const handleUser = (e) => {
@@ -111,7 +107,6 @@ function Rides({currentTime}) {
         setRenderOwnership('user')
         setSliceNum(24)
         setSliceTotal(userUpRides.length)
-        setDetailRide('')
     }
 
     const handlePublic = (e) => {
@@ -119,7 +114,6 @@ function Rides({currentTime}) {
         setRenderOwnership('public')
         setSliceNum(24)
         setSliceTotal(userPtRides.length)
-        setDetailRide('')
     }
 
     return (

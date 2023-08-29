@@ -50,6 +50,41 @@
     /* background-color: burlywood; */
 }
 
+.date-time-lockup {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 50px;
+}
+
+.add-stops-button {
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    position: absolute;
+    margin-left: -30px;
+    background-color: #2a344f;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.plus-symbol{
+    font-size: 18pt;
+    margin-top: 26px;
+}
+
+.create-input-field-date {
+    background-color: #2a344f;
+    border: none;
+    padding: 5px;
+    transition: transform 0.3s ease-in-out;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    color: #dad2c1;
+    width: 100%;
+}
+
 .create-input-field {
     background-color: #2a344f;
     border: none;

@@ -30,4 +30,6 @@ api = Api(app)
 bcrypt = Bcrypt(app)
 
 # Instantiate CORS
-CORS(app)
+CORS(app, origins=['http://localhost:3000'])
+
+app.secret_key = b'/\xe8\xfd\xbed\xaeHPt\x91L\xa0\xb2B\x80!'
