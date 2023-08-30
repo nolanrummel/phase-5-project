@@ -255,37 +255,39 @@ function RideCreator({setRideCreatorActive, currentTime}) {
     }
 
     const postRide = () => {
-        const rideformObj = {
-            'name': name,
-            'user_id': user.id,
-            'route_id': finalRouteId,
-            'date': `${rideDate} ${rideTime}`,
-            'created_by': user.id,
-            'rating': null
-        }
+        console.log('ride post')}
+    // const postRide = () => {
+    //     const rideformObj = {
+    //         'name': name,
+    //         'user_id': user.id,
+    //         'route_id': finalRouteId,
+    //         'date': `${rideDate} ${rideTime}`,
+    //         'created_by': user.id,
+    //         'rating': null
+    //     }
 
-        fetch('/rides', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(rideformObj)
-        })
-            .then(r => {
-                if (r.ok) {
-                    r.json()
-                        .then(data => {
-                            console.log(data)
-                            window.confirm('Have Fun on your Ride!')
-                        })
-                }
-                else {
-                    r.text()
-                        .then(data => {
-                            window.confirm('Ride Not Created, Try Again')
-                            // window.confirm(`${String(data.error)}`)
-                        })
-                }
-        })
-    }
+    //     fetch('/rides', {
+    //         method: 'POST',
+    //         headers: { 'Content-Type': 'application/json' },
+    //         body: JSON.stringify(rideformObj)
+    //     })
+    //         .then(r => {
+    //             if (r.ok) {
+    //                 r.json()
+    //                     .then(data => {
+    //                         console.log(data)
+    //                         window.confirm('Have Fun on your Ride!')
+    //                     })
+    //             }
+    //             else {
+    //                 r.text()
+    //                     .then(data => {
+    //                         window.confirm('Ride Not Created, Try Again')
+    //                         // window.confirm(`${String(data.error)}`)
+    //                     })
+    //             }
+    //     })
+    // }
 
     // detailRoute + 1 = actual route id
     

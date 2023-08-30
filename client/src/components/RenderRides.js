@@ -180,8 +180,3 @@ function RenderRides({rides, sliceNum, setSliceNum, renderTimeline, renderOwners
 }
 
 export default RenderRides
-
-{/* <h3>{ride.date}</h3> */}
-{/* <h5>Route: {ride.route.name} | {ride.route.distance} Miles</h5> */}
-{/* <h3>{ride.user.user_name}</h3> */}
-{/* description? */}
