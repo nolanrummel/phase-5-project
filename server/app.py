@@ -119,9 +119,7 @@ class Routes(Resource):
     
     def post(self):
         data = request.get_json()
-        # ipdb.set_trace()
         try:
-            # new_route = Route(name = data['name'], distance = ['distance'], origin = data['origin'], destination = data['destination'], waypoints = data['waypoints'])
             new_route = Route(name = data['name'], distance = data['distance'], origin = data['origin'], destination = data['destination'], created_by = data['created_by'])
         except Exception as e:
             return make_response({'error': str(e)}, 404)
@@ -136,6 +134,16 @@ class Rides(Resource):
         rides = [ride.to_dict(rules=('-user._password_hash',)) for ride in Ride.query.all()]
         return make_response(rides, 200)
     
+    def post(self):
+        data = request.get_json()
+        try:
+            new_ride = Ride(name = data['name'], user_id = data['user_id'], route_id = data['route_id'], date = data['date'], rating = data['rating'])
+        except Exception as e:
+            return make_response({'error': str(e)}, 404)
+        db.session.add(new_ride)
+        db.session.commit()
+        return make_response(new_ride.to_dict(), 201)
+    
 api.add_resource(Rides, '/rides')
 
 class RideById(Resource):
@@ -144,6 +152,7 @@ class RideById(Resource):
         if not ride:
             return make_response({'error':'Ride does not exist'}, 404)
         return make_response(ride.to_dict(rules=('-user._password_hash',)), 200)
+    
     
     def patch(self, id):
         ride = Ride.query.filter_by(id=id).first()

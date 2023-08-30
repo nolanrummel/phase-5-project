@@ -3,14 +3,18 @@
     align-items: baseline;
     justify-content: center;
     /* background-color: blue; */
-    max-width: 75%;
+    width: 85%;
 }
 
 .user-page {
     display: flex;
     flex-direction: column;
     align-items: center;
-    
+    /* background-color: green; */
+}
+
+.top-half {
+    display: flex;
     /* background-color: chocolate; */
 }
 
@@ -18,20 +22,60 @@
     display: flex;
     justify-content: space-between;
     padding-left: 20px;
+    /* height: 200px; */
     /* background-color: aqua; */
+    min-width: 400px;
+    width: 100%;
+}
+
+/* .add-user-image {
+    width: 300px;
+    height: 300px;
+    overflow: hidden;
+    border-radius: 50%;
+} */
+
+.add-user-bg {
+    background-color: #56666f;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.picture-plus-symbol {
+    /* changing color in the icon itself (stroke) */
+    height: 50%;
+    transition: transform 0.3s ease-in-out;
+}
+
+.picture-plus-symbol:hover {
+    transform: scale(1.3);
+}
+
+.inner-text {
+    margin-top: -10px;
+    padding-bottom: 25px;
+    color: #2a344f;
 }
 
 .user-image {
-    width: 40%;
-    height: 40%;
+    width: 100%;
+    height: 100%;
     overflow: hidden;
     border-radius: 50%;
+    /* background-color: brown; */
 }
 
 .user-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    margin: 0;
 }
 
 .user-details {
@@ -56,6 +100,7 @@
 .stats {
     display: flex;
     justify-content: space-between;
+    width: 400px;
 }
 
 .stat-box {

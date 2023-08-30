@@ -35,7 +35,7 @@ function Login() {
                 else {
                     r.json()
                         .then(data => {
-                            console.log(data)
+                            window.confirm(`${String(data.error)}`)
                         })
                 }
             })
