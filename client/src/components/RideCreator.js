@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect, useRef } from 'react'
 import { UserContext } from '../context/user'
 import { ReactComponent as BikeIcon } from '../icons/bike-icon.svg'
+import { Link } from 'react-router-dom'
 import Rating from './Rating'
 import "../styling/ride-creator.css"
 
@@ -24,7 +25,7 @@ function RideCreator({setRideCreatorActive, currentTime}) {
     const [detAverageRating, setDetAverageRating] = useState(0)
 
     const [firstSliceNum, setFirstSliceNum] = useState(0)
-    const [secondSliceNum, setSecondSliceNum] = useState(9)
+    const [secondSliceNum, setSecondSliceNum] = useState(6)
     const [detailRoute, setDetailRoute] = useState('')
     const [gridHeight, setGridHeight] = useState('')
 
@@ -52,36 +53,38 @@ function RideCreator({setRideCreatorActive, currentTime}) {
         };
     }, [customizeRoute])
 
+    const directions = (detailRoute) => {
+        const routeObj = routes.filter(item => item.id - 1 === detailRoute)
+
+        const originFull = routeObj[0].origin
+        const splitOrg = originFull.split(' | ')
+        const noNumberOrg = splitOrg[0].replace(/^\d+\s*/, '')
+
+        const destFull = routeObj[0].destination
+        const splitDest = destFull.split(' | ')
+        const noNumberDest = splitDest[0].replace(/^\d+\s*/, '')
+
+        return (
+            <h3 className='detail-route-address'>From {noNumberOrg} to {noNumberDest}</h3>
+        )
+    }
+
     const handleDetail = (routeId, averageRating) => {
         if (detailRoute === ''){
             setDetailRoute(routeId)
             setDetAverageRating(averageRating)
             const createUser = users.find(item => item.id === routeId)
             setCreatedBy(createUser)
-            console.log(`createUser (handleDetail first if) : ${createUser}`)
-            // const splitOrg = ride.route.origin.split(' | ')
-            // const noNumberOrg = splitOrg[0].replace(/^\d+\s*/, '')
-            // const splitDest = ride.route.destination.split(' | ')
-            // const noNumberDest = splitDest[0].replace(/^\d+\s*/, '')
-            console.log(`routeId (handleDetail first if) : ${routeId}`)
-            console.log(`createdBy (handleDetail first if) : ${createdBy}`)
-        } if (detailRoute === routeId) {
+        } else if (detailRoute === routeId) {
             setDetailRoute('')
-            console.log(`routeId (handleDetail second if) : ${routeId}`)
-            console.log(`createdBy (handleDetail second if) : ${createdBy}`)
-            const createUser = users.find(item => item.id === routeId)
-            console.log(`createUser (handleDetail else) : ${createUser}`)
+            // const createUser = users.find(item => item.id === routeId)
         } else {
             setDetailRoute(routeId)
             setDetAverageRating(averageRating)
             const createUser = users.find(item => item.id === routeId)
             setCreatedBy(createUser)
-            console.log(`routeId (handleDetail else) : ${routeId}`)
-            console.log(`createdBy (handleDetail else) : ${createdBy}`)
-            console.log(`createUser (handleDetail else) : ${createUser}`)
         }
-    }
-    
+    }    
 
     useEffect(() => {
         fetch('/routes')
@@ -136,25 +139,14 @@ function RideCreator({setRideCreatorActive, currentTime}) {
         const averageRating = (totalRating/completedRides.length).toFixed(2)
 
         return (
-            <div key={route.id} className='route-card' onClick={() => handleDetail((route.id), averageRating)}>
+            // <div key={route.id} className='route-card' onClick={() => handleDetail((route.id), averageRating)}>
+            <div key={route.id} className='route-card' onClick={() => handleDetail((route.id - 1), averageRating)}>
                 <h3 className='small-route-title'>{route.name}</h3>
                 <img className='small-map-image' src='/images/map-example.png' alt='map'/>
                 <h5 className='small-rating'>
                     <Rating rating={averageRating} altColor={true}/>
                 </h5>
                 <h5 className='small-miles'>{route.distance} Miles</h5>
-
-                {/* <div className='small-directions-lockup'>
-                    <div className='small-directions-container'>
-                        <h5 className='small-direction'>{noNumberOrg}</h5>
-                    </div>
-                    <div className='small-directions-divider-container'>
-                        <div className='small-directions-divider'></div>
-                    </div>
-                    <div className='small-directions-container'>
-                        <h5 className='small-direction'>{noNumberDest}</h5>
-                    </div>
-                </div> */}
             </div>
         )
     })
@@ -162,17 +154,17 @@ function RideCreator({setRideCreatorActive, currentTime}) {
     const handleSlice = (side) => {
         if (side == 'right') {
             if (secondSliceNum <= routes.length) {
-                setSecondSliceNum(secondSliceNum + 9)
-                setFirstSliceNum(firstSliceNum + 9)
+                setSecondSliceNum(secondSliceNum + 6)
+                setFirstSliceNum(firstSliceNum + 6)
                 setDetailRoute('')
-                setCreatedBy(0)
+                // setCreatedBy(0)
             }
         } if (side == 'left') {
-            if (firstSliceNum >= 9) {
-                setFirstSliceNum(firstSliceNum - 9)
-                setSecondSliceNum(secondSliceNum - 9)
+            if (firstSliceNum >= 6) {
+                setFirstSliceNum(firstSliceNum - 6)
+                setSecondSliceNum(secondSliceNum - 6)
                 setDetailRoute('')
-                setCreatedBy(0)
+                // setCreatedBy(0)
             }
         }
     }
@@ -224,8 +216,15 @@ function RideCreator({setRideCreatorActive, currentTime}) {
     const max = 50
     const rideDistance = Math.floor(Math.random() * (max - min + 1)) + min
 
+    const handleSelection = (e) => {
+        console.log(detailRoute + 1)//chosen route to build ride from
+    }
+
     const handleRouteCreate = (e) => {
         e.preventDefault()
+        //if all the form fields for route are filled out - send post to routes
+        //if only ride form fields are filled out (route chosen from existing) - send post to rides
+
         const formObj = {
             'name': routeName,
             'origin': startPoint,
@@ -372,28 +371,35 @@ function RideCreator({setRideCreatorActive, currentTime}) {
                     :
                     <div className='rides-routes-spacing'>
                         <div className='rides-routes-container'>
-                            {detailRoute ?
+                            {detailRoute !== '' ?
                                 <div className='create-detail-container' style={{height: gridHeight}} onClick={() => handleDetail('')}>
                                     <h2 style={{color: '#2a344f'}}>{routes[detailRoute].name}</h2>
-                                    {createdBy !== undefined ?
+                                    {directions(detailRoute)}
+                                    {/* {createdBy !== undefined ?
                                         <h4>Created By: {createdBy.user_name}</h4>
                                         :
                                         <h4>broken link</h4>
-                                    }
-                                    <img className='small-map-image' src='/images/map-example.png' alt='map'/>
-                                    <Rating rating={detAverageRating} altColor={true}/>
-                                    <div className='edit-miles-lockup'>
-                                        <h3 className='edit-miles-integer'>{milesInteger}<span>.{milesDecimal} Miles</span></h3>
+                                    } */}
+                                    <div className='detail-map-container'>
+                                        <img className='detail-map-image' src='/images/map-example.png' alt='map'/>
                                     </div>
-                                    
-                                    <div className='edit-miles-rating-lockup'>
-                                        <div className='edit-route-lockup'>
-                                            <div className='edit-route'>
-                                                {/* <div className='route-divider'></div>
-                                                <h3 className='edit-route-name'>From {noNumberOrg} to {noNumberDest}</h3> */}
-                                            </div>
+                                    <div className='miles-direction-lockup'>
+                                        <div className='detail-miles'>
+                                            <h3 className='detail-miles-integer'>{milesInteger}.{milesDecimal} Miles</h3>
+                                        </div>
+                                        <div className='detail-rating-container'>
+                                            <Rating rating={detAverageRating} altColor={true}/>
                                         </div>
                                     </div>
+                                    <div className='top-button-container'>
+                                        {/* <button className='top-buttons'>More Info</button> */}
+                                        <Link to='/routes' className='top-left-buttons' onClick={console.log()}>
+                                            <button className='more-info'>More Info</button>
+                                        </Link>
+                                        <button className='top-right-buttons' onClick={() => setDetailRoute('')}>Cancel</button>
+                                    </div>
+                                    <button className='bottom-button' onClick={handleSelection}>Choose This Ride</button>
+                                    
                                 </div>
                                 :
                                 <div className='routes-grid' ref={divRef} style={{height: gridHeight}}>                                    
@@ -402,7 +408,7 @@ function RideCreator({setRideCreatorActive, currentTime}) {
                             }
                             <div className='arrow-container'>
                                 <h1 className={firstSliceNum <= 0 ? 'left-arrow-inactive' : 'left-arrow'} onClick={() => handleSlice('left')}>〈</h1>
-                                <h5 className='page-number'>{secondSliceNum / 9}/{Math.ceil(routes.length / 9)}</h5>
+                                <h5 className='page-number'>{secondSliceNum / 6}/{Math.ceil(routes.length / 6)}</h5>
                                 <h1 className={secondSliceNum >= routes.length ? 'right-arrow-inactive' : 'right-arrow'} onClick={() => handleSlice('right')}>〈</h1>
                             </div>
                         </div>

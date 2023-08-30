@@ -47,7 +47,7 @@ class Route(db.Model, SerializerMixin):
     distance = db.Column(db.Integer)
     origin = db.Column(db.String)
     destination = db.Column(db.String)
-    created_by = db.Column(db.Integer)
+    created_by = db.Column(db.Integer) #SEE IF THIS NEEDS TO BE NULLABLE - IF SOMEONE DELETES THE USER, THIS WOULD RETURN NULL
     #waypoints = db.Column(db.PickleType)
     #elevation = db.Column(db.Integer)
 

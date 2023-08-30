@@ -235,6 +235,109 @@
 .create-detail-container {
     background-color: #9eada5;
     cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.detail-route-address {
+    margin-top: -15px;
+    margin-bottom: 10px;
+    /* background-color: red; */
+}
+
+.detail-map-container {
+    width: 73%
+}
+
+.detail-map-image {
+    width: 100%;
+}
+
+.detail-rating-container {
+    margin-top: 5px;
+    padding-left: 10px;
+    /* background-color: blue; */
+}
+
+.miles-direction-lockup {
+    display: flex;
+    align-items: center;
+}
+
+.detail-miles {
+    margin-top: 10px;
+    padding-right: 10px;
+    /* background-color: red; */
+}
+
+.detail-miles-integer {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.top-button-container {
+    display: flex;
+    justify-content: space-between;
+    width: 40%;
+    margin-top: 10px;
+    /* background-color: red; */
+}
+
+.top-left-buttons {
+    width: 45%;
+    border-radius: 15px 15px 15px 15px;
+    background-color: #2a344f;
+    transition: transform 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+.top-left-buttons:hover {
+    transform: scale(1.1);
+}
+
+.more-info {
+    padding: 3px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    border: none;
+    background-color: #2a344f;
+    color: #56666f;
+}
+
+.top-right-buttons {
+    width: 45%;
+    padding: 3px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    border-radius: 15px 15px 15px 15px;
+    border: none;
+    background-color: #2a344f;
+    color: #56666f;
+    transition: transform 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+.top-right-buttons:hover {
+    transform: scale(1.1);
+}
+
+.bottom-button {
+    width: 40%;
+    padding: 3px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    border-radius: 15px 15px 15px 15px;
+    border: none;
+    background-color: #56666f;
+    color: #2a344f;
+    margin-top: 10px;
+    transition: transform 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+.bottom-button:hover {
+    transform: scale(1.1);
 }
 
 .routes-grid {
