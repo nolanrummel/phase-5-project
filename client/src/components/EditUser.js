@@ -72,6 +72,19 @@ function EditUser({setEditUser}) {
                 <h2 className='edit-title'>Edit User</h2>
                 <BikeIcon className='edit-bike-icon'/>
             </div>
+            {/* <form className='edit-form'>
+                <h4 className='edit-name'>Profile Pic</h4>
+                <div className='edit-lockup'>
+                    <input
+                        className='edit-input-field'
+                        // placeholder='Change Name...'
+                        type='text'
+                        id='name'
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                    />
+                </div>
+            </form> */}
             <form className='edit-form'>
                 <h4 className='edit-name'>Name</h4>
                 <div className='edit-lockup'>
@@ -111,7 +124,6 @@ function EditUser({setEditUser}) {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
-                    {/* <button className='change-button' type='submit'>Change Password</button> */}
                 </div>
             </form>
                 

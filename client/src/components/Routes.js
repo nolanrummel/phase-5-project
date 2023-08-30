@@ -23,11 +23,15 @@ function Routes({currentTime}) {
             <div key={route.id}>
                 <h3>{route.name}</h3>
                 <h5>{route.distance} Miles</h5>
-                <div>
-                    <h5>Leader Board</h5>
-                    {/* {LeaderBoard(route)} */}
-                    <LeaderBoard route={route} currentTime={currentTime}/>
-                </div>
+                {route.rides.length > 0 ?
+                    <div>
+                        <h5>Leader Board</h5>
+                        {/* {LeaderBoard(route)} */}
+                        <LeaderBoard route={route} currentTime={currentTime}/>
+                    </div>
+                    :
+                    ''
+                }
             </div>
         )
     })

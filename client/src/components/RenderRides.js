@@ -107,7 +107,7 @@ function RenderRides({rides, sliceNum, setSliceNum, renderTimeline, renderOwners
                                 <div className='edit-miles-rating-lockup'>
                                     <div className='edit-route-lockup'>
                                         <div className='edit-route'>
-                                            <h3 className='edit-route-name' style={{color: '#9eada5'}}>Route</h3>
+                                            <h3 className='edit-route-name' style={{color: '#9eada5'}}>{ride.route.name}</h3>
                                             <div className='route-divider'></div>
                                             <h3 className='edit-route-name'>From {noNumberOrg} to {noNumberDest}</h3>
                                             {/* <h3 className='edit-route-name'>{ride.route.name}</h3> */}

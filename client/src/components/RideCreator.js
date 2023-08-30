@@ -23,6 +23,7 @@ function RideCreator({setRideCreatorActive, currentTime}) {
     const [milesInteger, setMilesInteger] = useState(0)
     const [milesDecimal, setMilesDecimal] = useState(0)
     const [detAverageRating, setDetAverageRating] = useState(0)
+    const [finalRouteId, setFinalRouteId] = useState('')
 
     const [firstSliceNum, setFirstSliceNum] = useState(0)
     const [secondSliceNum, setSecondSliceNum] = useState(6)
@@ -220,12 +221,8 @@ function RideCreator({setRideCreatorActive, currentTime}) {
         console.log(detailRoute + 1)//chosen route to build ride from
     }
 
-    const handleRouteCreate = (e) => {
-        e.preventDefault()
-        //if all the form fields for route are filled out - send post to routes
-        //if only ride form fields are filled out (route chosen from existing) - send post to rides
-
-        const formObj = {
+    const postRoute = () => {
+        const routeformObj = {
             'name': routeName,
             'origin': startPoint,
             'destination': endPoint,
@@ -233,29 +230,75 @@ function RideCreator({setRideCreatorActive, currentTime}) {
             'distance': rideDistance,
             'created_by': user.id
         }
-
+    
         fetch('/routes', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(formObj)
+            body: JSON.stringify(routeformObj)
         })
             .then(r => {
                 if (r.ok) {
-                    console.log(r.ok)
                     r.json()
                         .then(data => {
                             console.log(data)
-                            window.confirm('Route Created')
+                            window.confirm('Cool New Route!')
                         })
                 }
                 else {
-                    console.log('no good')
                     r.text()
                         .then(data => {
                             window.confirm('Route Not Created, Try Again')
+                            // window.confirm(`${String(data.error)}`)
                         })
                 }
-            })
+        })
+    }
+
+    const postRide = () => {
+        const rideformObj = {
+            'name': name,
+            'user_id': user.id,
+            'route_id': finalRouteId,
+            'date': `${rideDate} ${rideTime}`,
+            'created_by': user.id,
+            'rating': null
+        }
+
+        fetch('/rides', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(rideformObj)
+        })
+            .then(r => {
+                if (r.ok) {
+                    r.json()
+                        .then(data => {
+                            console.log(data)
+                            window.confirm('Have Fun on your Ride!')
+                        })
+                }
+                else {
+                    r.text()
+                        .then(data => {
+                            window.confirm('Ride Not Created, Try Again')
+                            // window.confirm(`${String(data.error)}`)
+                        })
+                }
+        })
+    }
+
+    // detailRoute + 1 = actual route id
+    
+    const handleRouteCreate = (e) => {
+        // e.preventDefault()
+        if (detailRoute) {
+            setFinalRouteId(detailRoute + 1)
+            postRide()
+        } else {
+            setFinalRouteId(1 + routes.length)
+            postRide()
+            postRoute()
+        } 
     }
 
     let formatDirections = []
@@ -419,9 +462,15 @@ function RideCreator({setRideCreatorActive, currentTime}) {
                 }
             </div>
             <div className='create-button-container'>
-                <div className='create-new-container'>
-                    <button className='create-new-button' onClick={handleRouteCreate}>Create Ride</button>
-                </div>
+                {customizeRoute ?
+                    <div className='create-new-container'>
+                        <button className='create-new-button' onClick={handleRouteCreate}>Create Ride and New Route</button>
+                    </div>
+                    :
+                    <div className='create-new-container'>
+                        <button className='create-new-button' onClick={handleRouteCreate}>Create Ride</button>
+                    </div>
+                }
                 <div className='cancel-container'>
                     <button className='cancel-button' onClick={handleRideCreatorActive}>Cancel</button>
                 </div>

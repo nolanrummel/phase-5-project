@@ -14,13 +14,27 @@ import datetime
 
 fake = Faker()
 
+def generate_image_url(image_types=['profile-pic'], width=500, height=500):
+    image_id = fake.random_int(min=1, max=100)
+    selected_type = fake.random_element(image_types)
+    return f"https://picsum.photos/{width}/{height}?image={image_id}&type={selected_type}"
+
 def create_users():
     users = []
     for _ in range(10):
+        while True:
+            new_name=fake.first_name()
+            if len(new_name) >= 2:
+                break
+        while True:
+            new_user_name=fake.user_name()
+            if len(new_user_name) >= 3:
+                break
         u = User(
-            name=fake.first_name(),
-            user_name=fake.user_name(),
-            _password_hash='$2b$12$1zeT0udSbh0Qa9QzNZchSeFoaG0TA4Jevy01L8PoM0/jj513Ts.ku'
+            name=new_name,
+            user_name=new_user_name,
+            _password_hash='$2b$12$KeFZ20GaKQr9TaGvxc8tJ.jjVaMB.zx5OZO8oZt8QJnmvt6AxBa3.',
+            profile_pic=generate_image_url(image_types=['profile-pic'])
         )
         users.append(u)
     return users
@@ -40,8 +54,13 @@ def create_routes():
         dest_lines = dest_full_address.split('\n')
         dest_first_line = re.sub(r'(Apt\.?|Suite|Ste)\s*\d+.*$', '', dest_lines[0]).strip()
 
+        short_name = re.sub(r'^\d+', '', origin_first_line)
+        endings = ['Loop', 'Sprint', 'Race', 'Run', 'Tempo', 'Stroll', 'Ride', 'Training', 'Intervals', 'Pedal', 'Series', 'Attempt', 'Hike', 'Rip']
+        random_ending = random.choice(endings)
+        name = f'{short_name} {random_ending}'
+
         r = Route(
-            name=fake.color(),
+            name=name,
             distance=random_miles,
             origin=(origin_first_line + " | " + origin_lines[1]),
             destination=(dest_first_line + " | " + dest_lines[1]),
@@ -55,8 +74,8 @@ def create_rides():
     for _ in range(500):
         rating = None
         ride_date = fake.date_time_between(start_date='-9w', end_date='+1w')
-        formatted_ride_date = ride_date.strftime('%Y-%m-%d %H:%M:%S')
         current_date = datetime.datetime.now()
+        # formatted_ride_date = ride_date.strftime('%Y-%m-%d %H:%M:%S')
         # formatted_current_date = current_date.toUTCString()
         if (current_date > ride_date):
             rating = randint(1, 5)

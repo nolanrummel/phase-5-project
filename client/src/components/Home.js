@@ -5,6 +5,7 @@ import Signup from "./Signup"
 import EditUser from './EditUser'
 import "../styling/home.css"
 import { ReactComponent as BikeIcon } from '../icons/bike-icon.svg'
+import { ReactComponent as PlusIcon } from '../icons/plus-icon.svg'
 
 function Home() {
     const { user, setUser } = useContext(UserContext)
@@ -68,21 +69,32 @@ function Home() {
         <div className='home-container'>
             {user ? 
                 <div className='user-page'>
-                    <div className='user-info'>
-                        <div className='user-image'>
-                            <img src='https://www.si.com/.image/t_share/MTY4MjYxMzkwNTk4NzQzMzE3/120829062901-lance-armstrong-3-single-image-cutjpg.jpg' alt={user.name}></img>
+                    <div className='top-half'>
+                        <div className='image-container'>
+                            {user.profile_pic === null ?
+                                <div className='add-user-bg' onClick={handleEdit}>
+                                    <PlusIcon className='picture-plus-symbol'/>
+                                    {/* <p className='inner-text'>Change Your<br></br>Profile Pic</p> */}
+                                </div>
+                                :
+                                <div className='user-image'>
+                                    <img src={user.profile_pic} alt={user.name}></img>
+                                </div>
+                            }
                         </div>
-                        <div className='user-details'>
-                            <div>
-                                <h4 className='user-id-name'>User ID: {user.id} | User Name: {user.user_name}</h4>
-                                <h2 className='welcome'>Welcome Back, {user.name} </h2>
-                            </div>
-                            <div>
-                                {user.rides.length >= 1 ?
-                                    statCreator()
-                                    :
-                                    ''
-                                }
+                        <div className='user-info'>
+                            <div className='user-details'>
+                                <div>
+                                    <h4 className='user-id-name'>User ID: {user.id} | User Name: {user.user_name}</h4>
+                                    <h2 className='welcome'>Welcome Back, {user.name} </h2>
+                                </div>
+                                <div>
+                                    {user.rides.length >= 1 ?
+                                        statCreator()
+                                        :
+                                        ''
+                                    }
+                                </div>
                             </div>
                         </div>
                     </div>
