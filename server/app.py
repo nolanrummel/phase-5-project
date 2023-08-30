@@ -49,26 +49,12 @@ class UserById(Resource):
         db.session.delete(user)
         db.session.commit()
         return make_response({}, 204)
-    
-    # def patch(self, id):
-    #     try:
-    #         user = User.query.filter_by(id = id).first()
-    #         data = request.get_json()
-    #         for attr in data:
-    #             setattr(user, attr, data[attr])
-    #         db.session.commit()
-    #         return make_response(user.to_dict(), 202)
-    #     except AttributeError:
-    #         return make_response({"error": "User does not Exist!"}, 404)
-    #     except ValueError:
-    #         return make_response({"errors": ["validation errors"]}, 400)
         
     def patch(self, id):
         user = User.query.filter_by(id=id).first()
         data = request.get_json()
         if not user :
             return make_response({"error" : "User does not Exist!"}, 404)
-        
         try:
             for attr in data:
                 setattr(user, attr, data[attr])
@@ -136,7 +122,7 @@ class Routes(Resource):
         # ipdb.set_trace()
         try:
             # new_route = Route(name = data['name'], distance = ['distance'], origin = data['origin'], destination = data['destination'], waypoints = data['waypoints'])
-            new_route = Route(name = data['name'], distance = ['distance'], origin = data['origin'], destination = data['destination'])
+            new_route = Route(name = data['name'], distance = data['distance'], origin = data['origin'], destination = data['destination'], created_by = data['created_by'])
         except Exception as e:
             return make_response({'error': str(e)}, 404)
         db.session.add(new_route)

@@ -7,6 +7,8 @@ import "../styling/ride-creator.css"
 function RideCreator({setRideCreatorActive, currentTime}) {
     const { user } = useContext(UserContext)
 
+    const [users, setUsers] = useState([])
+    const [createdBy, setCreatedBy] = useState(0)
     const [name, setName] = useState('')
     const [rideDate, setRideDate] = useState('')
     const [rideTime, setRideTime] = useState('')
@@ -54,15 +56,32 @@ function RideCreator({setRideCreatorActive, currentTime}) {
         if (detailRoute === ''){
             setDetailRoute(routeId)
             setDetAverageRating(averageRating)
-            // handleDetailStats(routeId)
+            const createUser = users.find(item => item.id === routeId)
+            setCreatedBy(createUser)
+            console.log(`createUser (handleDetail first if) : ${createUser}`)
+            // const splitOrg = ride.route.origin.split(' | ')
+            // const noNumberOrg = splitOrg[0].replace(/^\d+\s*/, '')
+            // const splitDest = ride.route.destination.split(' | ')
+            // const noNumberDest = splitDest[0].replace(/^\d+\s*/, '')
+            console.log(`routeId (handleDetail first if) : ${routeId}`)
+            console.log(`createdBy (handleDetail first if) : ${createdBy}`)
         } if (detailRoute === routeId) {
             setDetailRoute('')
+            console.log(`routeId (handleDetail second if) : ${routeId}`)
+            console.log(`createdBy (handleDetail second if) : ${createdBy}`)
+            const createUser = users.find(item => item.id === routeId)
+            console.log(`createUser (handleDetail else) : ${createUser}`)
         } else {
             setDetailRoute(routeId)
             setDetAverageRating(averageRating)
-            // handleDetailStats(routeId)
+            const createUser = users.find(item => item.id === routeId)
+            setCreatedBy(createUser)
+            console.log(`routeId (handleDetail else) : ${routeId}`)
+            console.log(`createdBy (handleDetail else) : ${createdBy}`)
+            console.log(`createUser (handleDetail else) : ${createUser}`)
         }
     }
+    
 
     useEffect(() => {
         fetch('/routes')
@@ -72,6 +91,17 @@ function RideCreator({setRideCreatorActive, currentTime}) {
           })
           .catch(error => {
             console.error('Error Fetching Routes:', error)
+          })
+    }, [])
+
+    useEffect(() => {
+        fetch('/users')
+          .then(response => response.json())
+          .then(data => {
+            setUsers(data)
+          })
+          .catch(error => {
+            console.error('Error Fetching Users:', error)
           })
     }, [])
 
@@ -106,7 +136,7 @@ function RideCreator({setRideCreatorActive, currentTime}) {
         const averageRating = (totalRating/completedRides.length).toFixed(2)
 
         return (
-            <div key={route.id} className='route-card' onClick={() => handleDetail((route.id - 1), averageRating)}>
+            <div key={route.id} className='route-card' onClick={() => handleDetail((route.id), averageRating)}>
                 <h3 className='small-route-title'>{route.name}</h3>
                 <img className='small-map-image' src='/images/map-example.png' alt='map'/>
                 <h5 className='small-rating'>
@@ -135,12 +165,14 @@ function RideCreator({setRideCreatorActive, currentTime}) {
                 setSecondSliceNum(secondSliceNum + 9)
                 setFirstSliceNum(firstSliceNum + 9)
                 setDetailRoute('')
+                setCreatedBy(0)
             }
         } if (side == 'left') {
             if (firstSliceNum >= 9) {
                 setFirstSliceNum(firstSliceNum - 9)
                 setSecondSliceNum(secondSliceNum - 9)
                 setDetailRoute('')
+                setCreatedBy(0)
             }
         }
     }
@@ -188,14 +220,19 @@ function RideCreator({setRideCreatorActive, currentTime}) {
         </form>
     ))
 
+    const min = 5
+    const max = 50
+    const rideDistance = Math.floor(Math.random() * (max - min + 1)) + min
+
     const handleRouteCreate = (e) => {
         e.preventDefault()
         const formObj = {
             'name': routeName,
             'origin': startPoint,
             'destination': endPoint,
-            'waypoints': formatDirections,
-            // 'distance': rideDistance
+            // 'waypoints': formatDirections,
+            'distance': rideDistance,
+            'created_by': user.id
         }
 
         fetch('/routes', {
@@ -216,7 +253,6 @@ function RideCreator({setRideCreatorActive, currentTime}) {
                     console.log('no good')
                     r.text()
                         .then(data => {
-                            console.log(data)
                             window.confirm('Route Not Created, Try Again')
                         })
                 }
@@ -263,7 +299,7 @@ function RideCreator({setRideCreatorActive, currentTime}) {
                                 className='create-input-field-date'
                                 // placeholder='Ride Date...'
                                 type='date'
-                                min='2023-08-28'//generate this with current time or new Date() instead of placeholder
+                                min={currentTime.slice(0, 10)}
                                 id='name'
                                 value={rideDate}
                                 onChange={(e) => setRideDate(e.target.value)}
@@ -339,7 +375,11 @@ function RideCreator({setRideCreatorActive, currentTime}) {
                             {detailRoute ?
                                 <div className='create-detail-container' style={{height: gridHeight}} onClick={() => handleDetail('')}>
                                     <h2 style={{color: '#2a344f'}}>{routes[detailRoute].name}</h2>
-                                    <h4>Created By: [USERNAME]</h4>
+                                    {createdBy !== undefined ?
+                                        <h4>Created By: {createdBy.user_name}</h4>
+                                        :
+                                        <h4>broken link</h4>
+                                    }
                                     <img className='small-map-image' src='/images/map-example.png' alt='map'/>
                                     <Rating rating={detAverageRating} altColor={true}/>
                                     <div className='edit-miles-lockup'>
@@ -349,9 +389,8 @@ function RideCreator({setRideCreatorActive, currentTime}) {
                                     <div className='edit-miles-rating-lockup'>
                                         <div className='edit-route-lockup'>
                                             <div className='edit-route'>
-                                                <div className='route-divider'></div>
-                                                {/* <h3 className='edit-route-name'>From {noNumberOrg} to {noNumberDest}</h3> */}
-                                                {/* <h3 className='edit-route-name'>{ride.route.name}</h3> */}
+                                                {/* <div className='route-divider'></div>
+                                                <h3 className='edit-route-name'>From {noNumberOrg} to {noNumberDest}</h3> */}
                                             </div>
                                         </div>
                                     </div>
