@@ -19,12 +19,12 @@
 .rating-lockup {
     display: flex;
     flex-direction: column;
-    text-align: right;
+    /* text-align: right; */
     /* background-color: red; */
 }
 
 .filled-star {
-    color: #56666f;
+    color: #2a344f;
     font-size: 13pt;
     padding-left: 2px;
 }

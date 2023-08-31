@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import { UserContext } from '../context/user'
 import Rating from './Rating'
+import "../styling/leader-board.css"
 
 function LeaderBoard({route, currentTime}) {
     const { user } = useContext(UserContext)
@@ -29,20 +30,22 @@ function LeaderBoard({route, currentTime}) {
     const slicedLeaders = sortedLeaders.slice(0, 5)
     return (
         <div>
-            <table>
+            <table className='leader-table'>
                 <thead>
-                    <tr>
-                        <th>Name</th>
+                    {/* <tr>
                         <th>Times Ridden</th>
+                        <th></th>
+                        <th>Leader Names</th>
                         <th>Total Miles</th>
-                    </tr>
+                    </tr> */}
                 </thead>
                 <tbody>
                     {slicedLeaders.map((leader) => (
                         <tr key={leader.id}>
-                            <td className={user.id === parseInt(leader.id) ? 'user-leader' : ''}>{leader.name}</td>
-                            <td className={user.id === parseInt(leader.id) ? 'user-leader' : ''}>{leader.count}</td>
-                            <td className={user.id === parseInt(leader.id) ? 'user-leader' : ''}>{(leader.count * route.distance).toFixed(2)}</td>
+                            <td className={user.id === parseInt(leader.id) ? 'user-leader' : 'user-leader-name'}>{leader.name}</td>
+                            <td className={user.id === parseInt(leader.id) ? 'user-leader' : 'user-leader-name'}>X</td>
+                            <td className={user.id === parseInt(leader.id) ? 'user-leader' : 'user-leader-name'}>{leader.count}</td>
+                            <td className={user.id === parseInt(leader.id) ? 'user-leader' : 'user-leader-name'}>{(leader.count * route.distance).toFixed(2)}</td>
                         </tr>
                     ))}
                 </tbody>
@@ -70,10 +73,12 @@ function LeaderBoard({route, currentTime}) {
                     </div>
                 )
             })} */}
-            <p>Total Trips: {completedRides.length}</p>
-            <p>Average Rating: {averageRating}</p>
-            <Rating rating={averageRating}/>
-            <p>({completedRides.length})</p>
+            <h4 className='total-trips'>Total Trips: {completedRides.length}</h4>
+            <h3 className='ride-detail-group'>Average Rating: {averageRating}</h3>
+            <div className='rating-routes-detail'>
+                <Rating rating={averageRating}/>
+            </div>
+            {/* <h4 className='ride-detail-group'>({completedRides.length})</h4> */}
         </div>
     )
 }

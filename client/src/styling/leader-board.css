@@ -1,0 +1,55 @@
+.leader-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: brown;
+}
+
+.leader-table th {
+    font-family: 'Bebas Neue', sans-serif;
+    color: #9eada5;
+    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: #2a344f;
+}
+
+.leader-table tr {
+    background-color: #2a344f;
+}
+
+/* #708a7c */
+
+.leader-table td {
+    font-family: 'Bebas Neue', sans-serif;
+    /* color: #9eada5; */
+    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.leader-table tr:nth-child(even) {
+    background-color: #56666f;
+}
+
+.user-leader-name {
+    color: #9eada5;
+}
+
+.user-leader {
+    color: #9d5223;
+}
+
+.total-trips {
+    color: #2a344f;
+    padding-top: 10px;
+}
+
+.ride-detail-group {
+    color: #2a344f;
+    margin-bottom: 2px;
+    margin-top: -10px;
+}
+
+.rating-routes-detail {
+    margin-bottom: -20px;
+}
