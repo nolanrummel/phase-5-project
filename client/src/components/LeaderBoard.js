@@ -40,9 +40,9 @@ function LeaderBoard({route, currentTime}) {
                 <tbody>
                     {slicedLeaders.map((leader) => (
                         <tr key={leader.id}>
-                            <td>{leader.name}</td>
-                            <td>{leader.count}</td>
-                            <td>{(leader.count * route.distance).toFixed(2)}</td>
+                            <td className={user.id === parseInt(leader.id) ? 'user-leader' : ''}>{leader.name}</td>
+                            <td className={user.id === parseInt(leader.id) ? 'user-leader' : ''}>{leader.count}</td>
+                            <td className={user.id === parseInt(leader.id) ? 'user-leader' : ''}>{(leader.count * route.distance).toFixed(2)}</td>
                         </tr>
                     ))}
                 </tbody>
@@ -71,7 +71,9 @@ function LeaderBoard({route, currentTime}) {
                 )
             })} */}
             <p>Total Trips: {completedRides.length}</p>
-            <p>Average Rating: {averageRating}<Rating rating={averageRating}/>({completedRides.length})</p>
+            <p>Average Rating: {averageRating}</p>
+            <Rating rating={averageRating}/>
+            <p>({completedRides.length})</p>
         </div>
     )
 }
