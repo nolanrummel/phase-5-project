@@ -113,7 +113,7 @@ function EditUser({setEditUser}) {
                     {/* <button className='change-button' type='submit'>Change Username</button> */}
                 </div>
             </form>
-            <form className='edit-form'>
+            {/* <form className='edit-form'>
                 <h4 className='edit-name'>Password</h4>
                 <div className='edit-lockup'>
                     <input
@@ -125,7 +125,7 @@ function EditUser({setEditUser}) {
                         onChange={(e) => setPassword(e.target.value)}
                     />
                 </div>
-            </form>
+            </form> */}
                 
             <button className='finish-edit-button' onClick={handleSubmit}>Confirm Changes</button>
             <button className='delete-user-button' onClick={handleDelete} value={'test'}>Delete User</button>

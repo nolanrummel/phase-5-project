@@ -1,10 +1,18 @@
+.editing-rating-lockup {
+    
+}
+
 .edit-filled-star {
-    color: green;
+    color: #2a344f;
+    font-size: 13pt;
+    padding-left: 2px;
     cursor: pointer;
 }
 
 .edit-empty-star {
-    color: blue;
+    color: #56666f;
+    font-size: 13pt;
+    padding-left: 2px;
     cursor: pointer;
 }
 
@@ -31,6 +39,29 @@
     display: inline-block;
     -webkit-text-fill-color: transparent;
     font-size: 13pt;
+    padding-left: 2px;
+    /* background: linear-gradient(to right, gold 50%, red 50%); */
+    background-clip: text;
+    /* -webkit-background-clip: text; */
+}
+
+.selected-filled-star {
+    color: #56666f;
+    font-size: 10pt;
+    padding-left: 2px;
+}
+
+.selected-empty-star {
+    color: #9eada5;
+    font-size: 10pt;
+    padding-left: 2px;
+}
+
+.selected-fractional-star {
+    display: inline-block;
+    -webkit-text-fill-color: transparent;
+    font-size: 10pt;
+    padding-left: 2px;
     /* background: linear-gradient(to right, gold 50%, red 50%); */
     background-clip: text;
     /* -webkit-background-clip: text; */
@@ -52,6 +83,7 @@
     display: inline-block;
     -webkit-text-fill-color: transparent;
     font-size: 10pt;
+    padding-left: 2px;
     /* background: linear-gradient(to right, gold 50%, red 50%); */
     background-clip: text;
     /* -webkit-background-clip: text; */
@@ -74,4 +106,22 @@
 .change-rating:hover {
     transform: scale(1.1);
     background-color: #2a344f;
+}
+
+.confirm-rating {
+    background-color: #2a344f;
+    border: none;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    color: #56666f;
+    font-family: 'Bebas Neue', sans-serif;
+    width: 100%;
+    transition: transform 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+.confirm-rating:hover {
+    transform: scale(1.1);
 }

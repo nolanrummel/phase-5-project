@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { UserContext } from '../context/user'
 import "../styling/rating.css"
 
-function Rating({rating, rideId, detailRide, altColor }) {
+function Rating({rating, rideId, detailRide, altColor, selectedColor}) {
     const { user } = useContext(UserContext)
 
     const [starRating, setStarRating] = useState(rating)
@@ -36,7 +36,6 @@ function Rating({rating, rideId, detailRide, altColor }) {
     const confirmRating = (e) => {
         e.stopPropagation()
 
-        console.log(rideId)
         const formObj = {
             'rating': starRating
         }
@@ -47,7 +46,6 @@ function Rating({rating, rideId, detailRide, altColor }) {
         }).then(r => {
         if (r.ok) {
             r.json().then(data => {
-                console.log(data)
                 setNewRating(starRating)
                 setStartingRating(starRating)
             })
@@ -56,6 +54,7 @@ function Rating({rating, rideId, detailRide, altColor }) {
                 console.log(data)
             })
         }})
+        setEditing(!editing)
     }
 
     return (
@@ -63,7 +62,7 @@ function Rating({rating, rideId, detailRide, altColor }) {
             {detailRide ? 
                 <div>
                     {editing ? 
-                        <div>
+                        <div className='editing-rating-lockup'>
                             {Array.from({length: 5}, (_, index) => (
                                 <span
                                     key={index}
@@ -77,8 +76,8 @@ function Rating({rating, rideId, detailRide, altColor }) {
                                 </span>
                             ))}
                             <div>
-                                <button onClick={confirmRating}>Confirm Changes</button>
-                                <button onClick={handleEditState}>Cancel Editing</button>
+                                <button className='confirm-rating' onClick={confirmRating}>Confirm Changes</button>
+                                {/* <button onClick={handleEditState}>Cancel Editing</button> */}
                             </div>
                         </div>
                         :
@@ -107,7 +106,6 @@ function Rating({rating, rideId, detailRide, altColor }) {
                 </div>
                 :
                 <div>
-
                     {altColor ? 
                         <div className='rating-lockup'>
                             <div>
@@ -123,6 +121,26 @@ function Rating({rating, rideId, detailRide, altColor }) {
                                 }
                                 {Array.from({length: arrayLength}, (_, index) => (
                                     <span key={index} className='alt-empty-star'>
+                                        ★
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
+                        : selectedColor ?
+                        <div className='rating-lockup'>
+                            <div>
+                                {Array.from({length: averageInteger}, (_, index) => (
+                                    <span key={index} className='selected-filled-star'>
+                                        ★
+                                    </span>
+                                ))}
+                                {averageDecimal == 0 ? '':
+                                    <span className='selected-fractional-star' style={{background: `linear-gradient(to right, #56666f ${averageDecimal}%, #9eada5 ${averageDecimal}%)`, 'WebkitBackgroundClip': 'text'}}>
+                                        ★
+                                    </span>
+                                }
+                                {Array.from({length: arrayLength}, (_, index) => (
+                                    <span key={index} className='selected-empty-star'>
                                         ★
                                     </span>
                                 ))}

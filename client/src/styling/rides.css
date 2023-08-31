@@ -121,6 +121,18 @@
     background-color: #9eada5;
 }
 
+.ready-to-ride {
+    background-color: #708a7c;
+    padding-left: 25px;
+    padding-right: 25px;
+}
+
+.root-on-user {
+    background-color: #9eada5;
+    padding-left: 25px;
+    padding-right: 25px;
+}
+
 .date {
     position: absolute;
     bottom: 0;

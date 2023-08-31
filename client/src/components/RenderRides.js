@@ -129,9 +129,14 @@ function RenderRides({rides, sliceNum, setSliceNum, renderTimeline, renderOwners
                                 ) : (
                                     user !== null ? (
                                         ride.user.id === user.id ? (
-                                            <div>You're in!</div>
+                                            <div className='ready-to-ride'>
+                                                <h3>You Got This!</h3>
+                                            </div>
                                         ) : (
-                                            <button>Create a Ride With This Route</button>
+                                            <div className='root-on-user'>
+                                                <h3>Let's Go {ride.user.name}!</h3>
+                                            </div>
+                                            // <button>Create a Ride With This Route</button>
                                         )
                                     ) : (
                                         <button>Login to Sign Up</button>

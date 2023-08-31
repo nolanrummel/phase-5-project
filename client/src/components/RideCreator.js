@@ -24,6 +24,8 @@ function RideCreator({setRideCreatorActive, currentTime}) {
     const [milesDecimal, setMilesDecimal] = useState(0)
     const [detAverageRating, setDetAverageRating] = useState(0)
     const [finalRouteId, setFinalRouteId] = useState('')
+    const [existingFinalRouteId, setExistingFinalRouteId] = useState('')
+    const [reRender, setReRender] = useState('')
 
     const [firstSliceNum, setFirstSliceNum] = useState(0)
     const [secondSliceNum, setSecondSliceNum] = useState(6)
@@ -85,7 +87,7 @@ function RideCreator({setRideCreatorActive, currentTime}) {
             const createUser = users.find(item => item.id === routeId)
             setCreatedBy(createUser)
         }
-    }    
+    }  
 
     useEffect(() => {
         fetch('/routes')
@@ -96,7 +98,7 @@ function RideCreator({setRideCreatorActive, currentTime}) {
           .catch(error => {
             console.error('Error Fetching Routes:', error)
           })
-    }, [])
+    }, [reRender])
 
     useEffect(() => {
         fetch('/users')
@@ -158,6 +160,7 @@ function RideCreator({setRideCreatorActive, currentTime}) {
                 setSecondSliceNum(secondSliceNum + 6)
                 setFirstSliceNum(firstSliceNum + 6)
                 setDetailRoute('')
+                setExistingFinalRouteId('')
                 // setCreatedBy(0)
             }
         } if (side == 'left') {
@@ -165,6 +168,7 @@ function RideCreator({setRideCreatorActive, currentTime}) {
                 setFirstSliceNum(firstSliceNum - 6)
                 setSecondSliceNum(secondSliceNum - 6)
                 setDetailRoute('')
+                setExistingFinalRouteId('')
                 // setCreatedBy(0)
             }
         }
@@ -213,15 +217,60 @@ function RideCreator({setRideCreatorActive, currentTime}) {
         </form>
     ))
 
-    const min = 5
-    const max = 50
-    const rideDistance = Math.floor(Math.random() * (max - min + 1)) + min
+    const handleRouteCreate = (e) => {
+        if (detailRoute) {
+            postRideExistingRoute()
+        } else {
+            setFinalRouteId(1 + routes.length)
+            postRoute()
+        }
+        setDetailRoute('')
+    }
 
     const handleSelection = (e) => {
-        console.log(detailRoute + 1)//chosen route to build ride from
+        e.stopPropagation()
+        setExistingFinalRouteId(detailRoute + 1)
+    }
+
+    const postRide = (newRouteId) => {
+        const rideformObj = {
+            'name': name,
+            'user_id': user.id,
+            'route_id': newRouteId,
+            'date': `${rideDate} ${rideTime}`,
+            'created_by': user.id,
+            'rating': null
+        }
+
+        fetch('/rides', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(rideformObj)
+        })
+            .then(r => {
+                if (r.ok) {
+                    r.json()
+                        .then(data => {
+                            console.log(data)
+                            window.confirm('Have Fun on your Ride!')
+                        })
+                }
+                else {
+                    r.text()
+                        .then(data => {
+                            window.confirm('Ride Not Created, Try Again')
+                            // window.confirm(`${String(data.error)}`)
+                        })
+                }
+        })
+        setExistingFinalRouteId('')
+        setReRender('')
     }
 
     const postRoute = () => {
+        const min = 5
+        const max = 50
+        const rideDistance = Math.floor(Math.random() * (max - min + 1)) + min
         const routeformObj = {
             'name': routeName,
             'origin': startPoint,
@@ -242,6 +291,7 @@ function RideCreator({setRideCreatorActive, currentTime}) {
                         .then(data => {
                             console.log(data)
                             window.confirm('Cool New Route!')
+                            postRide(data.id)
                         })
                 }
                 else {
@@ -252,56 +302,46 @@ function RideCreator({setRideCreatorActive, currentTime}) {
                         })
                 }
         })
+        setExistingFinalRouteId('')
+        setReRender('')
     }
 
-    const postRide = () => {
-        console.log('ride post')}
-    // const postRide = () => {
-    //     const rideformObj = {
-    //         'name': name,
-    //         'user_id': user.id,
-    //         'route_id': finalRouteId,
-    //         'date': `${rideDate} ${rideTime}`,
-    //         'created_by': user.id,
-    //         'rating': null
-    //     }
+    const postRideExistingRoute = () => {
+        const rideformObj = {
+            'name': name,
+            'user_id': user.id,
+            'route_id': existingFinalRouteId,
+            'date': `${rideDate} ${rideTime}`,
+            'created_by': user.id,
+            'rating': null
+        }
 
-    //     fetch('/rides', {
-    //         method: 'POST',
-    //         headers: { 'Content-Type': 'application/json' },
-    //         body: JSON.stringify(rideformObj)
-    //     })
-    //         .then(r => {
-    //             if (r.ok) {
-    //                 r.json()
-    //                     .then(data => {
-    //                         console.log(data)
-    //                         window.confirm('Have Fun on your Ride!')
-    //                     })
-    //             }
-    //             else {
-    //                 r.text()
-    //                     .then(data => {
-    //                         window.confirm('Ride Not Created, Try Again')
-    //                         // window.confirm(`${String(data.error)}`)
-    //                     })
-    //             }
-    //     })
-    // }
+        fetch('/rides', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(rideformObj)
+        })
+            .then(r => {
+                if (r.ok) {
+                    r.json()
+                        .then(data => {
+                            console.log(data)
+                            window.confirm('Have Fun on your Ride!')
+                        })
+                }
+                else {
+                    r.text()
+                        .then(data => {
+                            window.confirm('Ride Not Created, Try Again')
+                            // window.confirm(`${String(data.error)}`)
+                        })
+                }
+        })
+        setExistingFinalRouteId('')
+        setReRender('')
+    }
 
     // detailRoute + 1 = actual route id
-    
-    const handleRouteCreate = (e) => {
-        // e.preventDefault()
-        if (detailRoute) {
-            setFinalRouteId(detailRoute + 1)
-            postRide()
-        } else {
-            setFinalRouteId(1 + routes.length)
-            postRide()
-            postRoute()
-        } 
-    }
 
     let formatDirections = []
     
@@ -417,8 +457,8 @@ function RideCreator({setRideCreatorActive, currentTime}) {
                     <div className='rides-routes-spacing'>
                         <div className='rides-routes-container'>
                             {detailRoute !== '' ?
-                                <div className='create-detail-container' style={{height: gridHeight}} onClick={() => handleDetail('')}>
-                                    <h2 style={{color: '#2a344f'}}>{routes[detailRoute].name}</h2>
+                                <div className={existingFinalRouteId == detailRoute + 1 ? 'chosen-create-detail-container' : 'create-detail-container'} style={{height: gridHeight}} onClick={() => handleDetail('')}>
+                                    <h2 style={existingFinalRouteId == detailRoute + 1 ? {color: '#9eada5'} : {color: '#2a344f'}}>{routes[detailRoute].name}</h2>
                                     {directions(detailRoute)}
                                     {/* {createdBy !== undefined ?
                                         <h4>Created By: {createdBy.user_name}</h4>
@@ -433,18 +473,23 @@ function RideCreator({setRideCreatorActive, currentTime}) {
                                             <h3 className='detail-miles-integer'>{milesInteger}.{milesDecimal} Miles</h3>
                                         </div>
                                         <div className='detail-rating-container'>
-                                            <Rating rating={detAverageRating} altColor={true}/>
+                                            <Rating rating={detAverageRating} altColor={existingFinalRouteId == detailRoute + 1 ? '' : true} selectedColor={existingFinalRouteId == detailRoute + 1 ? true : ''}/>
                                         </div>
                                     </div>
                                     <div className='top-button-container'>
-                                        {/* <button className='top-buttons'>More Info</button> */}
-                                        <Link to='/routes' className='top-left-buttons' onClick={console.log()}>
-                                            <button className='more-info'>More Info</button>
+                                        <Link to='/routes' className='top-left-buttons' style={existingFinalRouteId == detailRoute + 1 ? {backgroundColor: '#9eada5'} : {backgroundColor: '#2a344f'}}>
+                                            <button className={'more-info'} style={existingFinalRouteId == detailRoute + 1 ? {backgroundColor: '#9eada5'} : {backgroundColor: '#2a344f'}}>More Info</button>
                                         </Link>
-                                        <button className='top-right-buttons' onClick={() => setDetailRoute('')}>Cancel</button>
+                                        <button className='top-right-buttons' style={existingFinalRouteId == detailRoute + 1 ? {backgroundColor: '#9eada5'} : {backgroundColor: '#2a344f'}} onClick={() => {
+                                            setDetailRoute('')
+                                            setExistingFinalRouteId('')
+                                        }}>Cancel</button>
                                     </div>
-                                    <button className='bottom-button' onClick={handleSelection}>Choose This Ride</button>
-                                    
+                                    {existingFinalRouteId == detailRoute + 1 ? 
+                                        <h4 className='ready-for-ride'>Ride Ready for Creation</h4>
+                                        :
+                                        <button className='bottom-button' onClick={handleSelection}>Choose This Ride</button>
+                                    }
                                 </div>
                                 :
                                 <div className='routes-grid' ref={divRef} style={{height: gridHeight}}>                                    
@@ -466,11 +511,11 @@ function RideCreator({setRideCreatorActive, currentTime}) {
             <div className='create-button-container'>
                 {customizeRoute ?
                     <div className='create-new-container'>
-                        <button className='create-new-button' onClick={handleRouteCreate}>Create Ride and New Route</button>
+                        <button className='create-new-button' onClick={handleRouteCreate}>Create Ride & New Route</button>
                     </div>
                     :
                     <div className='create-new-container'>
-                        <button className='create-new-button' onClick={handleRouteCreate}>Create Ride</button>
+                        <button className='create-new-button' onClick={postRideExistingRoute}>Create Ride</button>
                     </div>
                 }
                 <div className='cancel-container'>
