@@ -155,7 +155,7 @@ function Rating({rating, rideId, detailRide, altColor, selectedColor}) {
                                     </span>
                                 ))}
                                 {averageDecimal == 0 ? '':
-                                    <span className='fractional-star' style={{background: `linear-gradient(to right, gold ${averageDecimal}%, red ${averageDecimal}%)`, 'WebkitBackgroundClip': 'text'}}>
+                                    <span className='fractional-star' style={{background: `linear-gradient(to right, #2a344f ${averageDecimal}%, #9eada5 ${averageDecimal}%)`, 'WebkitBackgroundClip': 'text'}}>
                                         ★
                                     </span>
                                 }
