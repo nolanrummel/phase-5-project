@@ -145,7 +145,7 @@ function RideCreator({setRideCreatorActive, currentTime}) {
             // <div key={route.id} className='route-card' onClick={() => handleDetail((route.id), averageRating)}>
             <div key={route.id} className='route-card' onClick={() => handleDetail((route.id - 1), averageRating)}>
                 <h3 className='small-route-title'>{route.name}</h3>
-                <img className='small-map-image' src='/images/map-example.png' alt='map'/>
+                <img className='small-map-image' src={route.map_preview} alt={route.name}/>
                 <h5 className='small-rating'>
                     <Rating rating={averageRating} altColor={true}/>
                 </h5>
@@ -277,7 +277,8 @@ function RideCreator({setRideCreatorActive, currentTime}) {
             'destination': endPoint,
             // 'waypoints': formatDirections,
             'distance': rideDistance,
-            'created_by': user.id
+            'created_by': user.id,
+            'map_preview': '/images/map-example.png'
         }
     
         fetch('/routes', {
@@ -466,7 +467,7 @@ function RideCreator({setRideCreatorActive, currentTime}) {
                                         <h4>broken link</h4>
                                     } */}
                                     <div className='detail-map-container'>
-                                        <img className='detail-map-image' src='/images/map-example.png' alt='map'/>
+                                        <img className='detail-map-image' src={routes[detailRoute].map_preview} alt={routes[detailRoute].name}/>
                                     </div>
                                     <div className='miles-direction-lockup'>
                                         <div className='detail-miles'>

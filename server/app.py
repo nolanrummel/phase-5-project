@@ -120,7 +120,7 @@ class Routes(Resource):
     def post(self):
         data = request.get_json()
         try:
-            new_route = Route(name = data['name'], distance = data['distance'], origin = data['origin'], destination = data['destination'], created_by = data['created_by'])
+            new_route = Route(name = data['name'], distance = data['distance'], origin = data['origin'], destination = data['destination'], created_by = data['created_by'], map_preview = data['map_preview'])
         except Exception as e:
             return make_response({'error': str(e)}, 404)
         db.session.add(new_route)
