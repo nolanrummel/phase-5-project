@@ -66,6 +66,7 @@ class Route(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
     distance = db.Column(db.Integer)
+    map_preview = db.Column(db.String)
     origin = db.Column(db.String)
     destination = db.Column(db.String)
     created_by = db.Column(db.Integer) #SEE IF THIS NEEDS TO BE NULLABLE - IF SOMEONE DELETES THE USER, THIS WOULD RETURN NULL

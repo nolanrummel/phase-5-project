@@ -30,26 +30,49 @@ function LeaderBoard({route, currentTime}) {
     const slicedLeaders = sortedLeaders.slice(0, 5)
     return (
         <div>
-            <table className='leader-table'>
-                <thead>
-                    {/* <tr>
-                        <th>Times Ridden</th>
-                        <th></th>
-                        <th>Leader Names</th>
-                        <th>Total Miles</th>
-                    </tr> */}
-                </thead>
-                <tbody>
-                    {slicedLeaders.map((leader) => (
-                        <tr key={leader.id}>
-                            <td className={user.id === parseInt(leader.id) ? 'user-leader' : 'user-leader-name'}>{leader.name}</td>
-                            <td className={user.id === parseInt(leader.id) ? 'user-leader' : 'user-leader-name'}>X</td>
-                            <td className={user.id === parseInt(leader.id) ? 'user-leader' : 'user-leader-name'}>{leader.count}</td>
-                            <td className={user.id === parseInt(leader.id) ? 'user-leader' : 'user-leader-name'}>{(leader.count * route.distance).toFixed(2)}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+            {user ? 
+                <table className='leader-table'>
+                    <thead>
+                        {/* <tr>
+                            <th>Times Ridden</th>
+                            <th></th>
+                            <th>Leader Names</th>
+                            <th>Total Miles</th>
+                        </tr> */}
+                    </thead>
+                    <tbody>
+                        {slicedLeaders.map((leader) => (
+                            <tr key={leader.id}>
+                                <td className={user.id === parseInt(leader.id) ? 'user-leader' : 'user-leader-name'}>{leader.name}</td>
+                                <td className={user.id === parseInt(leader.id) ? 'user-leader' : 'user-leader-name'}>X</td>
+                                <td className={user.id === parseInt(leader.id) ? 'user-leader' : 'user-leader-name'}>{leader.count}</td>
+                                <td className={user.id === parseInt(leader.id) ? 'user-leader' : 'user-leader-name'}>{(leader.count * route.distance).toFixed(2)}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+                :
+                <table className='leader-table'>
+                    <thead>
+                        {/* <tr>
+                            <th>Times Ridden</th>
+                            <th></th>
+                            <th>Leader Names</th>
+                            <th>Total Miles</th>
+                        </tr> */}
+                    </thead>
+                    <tbody>
+                        {slicedLeaders.map((leader) => (
+                            <tr key={leader.id}>
+                                <td className={'user-leader-name'}>{leader.name}</td>
+                                <td className={'user-leader-name'}>X</td>
+                                <td className={'user-leader-name'}>{leader.count}</td>
+                                <td className={'user-leader-name'}>{(leader.count * route.distance).toFixed(2)}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            }
             {/* {slicedLeaders.map(leader => {
                 return (
                     <div key={leader.id}>

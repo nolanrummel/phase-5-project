@@ -87,9 +87,9 @@ function RenderRides({rides, sliceNum, setSliceNum, renderTimeline, renderOwners
                     )}
                     <div className='map-date-container'>
                         {detailRide === ride.id ?
-                            <img className='map-image' src='/images/map-example.png' alt='map'/>
+                            <img className='map-image' src={ride.route.map_preview} alt={ride.route.name}/>
                             :
-                            <img className='map-image' src='/images/map-example.png' alt='map'/>
+                            <img className='map-image' src={ride.route.map_preview} alt={ride.route.name}/>
                         }
                         {detailRide === ride.id ?
                             <div className='edit-lockup'>

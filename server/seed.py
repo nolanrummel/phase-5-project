@@ -59,12 +59,23 @@ def create_routes():
         random_ending = random.choice(endings)
         name = f'{short_name} {random_ending}'
 
+        map_previews = [
+            '/images/map-example.png',
+            '/images/map-example-2.png',
+            '/images/map-example-3.png',
+            '/images/map-example-4.png',
+            '/images/map-example-5.png',
+            '/images/map-example-6.png'
+        ]
+
+
         r = Route(
             name=name,
             distance=random_miles,
             origin=(origin_first_line + " | " + origin_lines[1]),
             destination=(dest_first_line + " | " + dest_lines[1]),
-            created_by=randint(1, 10)
+            created_by=randint(1, 10),
+            map_preview=random.choice(map_previews)
         )
         routes.append(r)
     return routes
