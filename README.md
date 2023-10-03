@@ -1,6 +1,6 @@
 # RideLink
 
-Get Connected with other Cyclists!
+Get Connected and Get Riding!
 
 ## Description
 
